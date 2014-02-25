@@ -61,6 +61,15 @@
             class="eu.martinlange.launchpad.commands.LaunchExtensionContributionFactory"
             locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=group.open">
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:eu.martinlange.launchpad.ui.LaunchPad">
+         <command
+               commandId="org.eclipse.ui.navigate.collapseAll"
+               label="Collapse All"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">
@@ -99,6 +108,18 @@
                contentTypeId="eu.martinlange.launchConfiguration">
          </contentTypeBinding>
       </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            class="eu.martinlange.launchpad.views.LaunchpadView"
+            fastViewWidthRatio="0.35"
+            icon="icons/full/eview16/launchpad.gif"
+            id="eu.martinlange.launchpad.ui.LaunchPad"
+            name="Launch Pad"
+            restorable="true">
+      </view>
    </extension>
 
 </plugin>

@@ -5,6 +5,8 @@ import org.eclipse.swt.graphics.Image;
 
 public interface ISharedImages {
 
+	public final static String IMG_OBJ_FOLDER      = "IMG_OBJ_FOLDER";
+	
 	public final static String IMG_ETOOL_RUN       = "IMG_ETOOL_RUN";
 	public final static String IMG_ETOOL_DEBUG     = "IMG_ETOOL_DEBUG";
 	public final static String IMG_ETOOL_PROFILE   = "IMG_ETOOL_PROFILE";
