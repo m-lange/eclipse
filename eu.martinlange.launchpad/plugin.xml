@@ -100,5 +100,17 @@
          </contentTypeBinding>
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            class="eu.martinlange.launchpad.views.LaunchpadView"
+            fastViewWidthRatio="0.35"
+            icon="icons/full/eview16/launchpad.gif"
+            id="eu.martinlange.launchpad.ui.LaunchPad"
+            name="Launch Pad"
+            restorable="true">
+      </view>
+   </extension>
 
 </plugin>
