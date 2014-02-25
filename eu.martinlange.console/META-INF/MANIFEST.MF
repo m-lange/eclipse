@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Grep Console
+Bundle-SymbolicName: eu.martinlange.console;singleton:=true
+Bundle-Version: 1.4.2.qualifier
+Bundle-Activator: eu.martinlange.console.Plugin
+Bundle-Vendor: Martin Lange
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.debug.core;bundle-version="3.9.0",
+ org.eclipse.debug.ui;bundle-version="3.10.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.ui.console

@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Themes
+Bundle-SymbolicName: eu.martinlange.theme;singleton:=true
+Bundle-Version: 1.0.3.qualifier
+Bundle-Activator: eu.martinlange.theme.Plugin
+Bundle-Vendor: Martin Lange
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.e4.ui.css.swt;bundle-version="0.11.100",
+ org.eclipse.jface.text
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.ui.texteditor

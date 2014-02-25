@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.e4.ui.css.swt.theme">
+      <theme
+            basestylesheeturi="css/classic.css"
+            id="eu.martinlange.theme.classic"
+            label="Classic Theme">
+      </theme>
+      <stylesheet
+            uri="css/empty.css">
+         <themeid
+               refid="eu.martinlange.theme.classic">
+         </themeid>
+         <osgiresourcelocator
+               uri="platform:/plugin/eu.martinlange.theme/">
+         </osgiresourcelocator>
+      </stylesheet>
+   </extension>
+ <extension
+         point="org.eclipse.ui.themes">
+      <colorDefinition
+            categoryId="org.eclipse.ui.presentation.default"
+            value="COLOR_WIDGET_BACKGROUND"
+            id="eu.martinlange.theme.verticalRulerBkgnd"
+            isEditable="true"
+            label="Vertical ruler background">
+         <description>
+            The color used as background for the ruler presented next to a source viewer showing all annotations of the current view.
+         </description>
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.ui.presentation.default"
+            value="COLOR_WIDGET_BACKGROUND"
+            id="eu.martinlange.theme.overviewRulerBkgnd"
+            isEditable="true"
+            label="Overview ruler background">
+         <description>
+            The color used as background for the ruler presented next to a source viewer showing all annotations.
+         </description>
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.ui.presentation.default"
+            id="eu.martinlange.theme.rangeIndicatorColor"
+            isEditable="true"
+            label="Range indicator background"
+            value="COLOR_LIST_SELECTION">
+         <description>
+            The color used as foreground for the range indicator.
+         </description>
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.ui.presentation.default"
+            id="eu.martinlange.theme.rangeIndicatorBkgnd"
+            isEditable="true"
+            label="Range indicator background"
+            value="COLOR_WIDGET_BACKGROUND">
+         <description>
+            The color used as background for the range indicator.
+         </description>
+      </colorDefinition>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="eu.martinlange.theme.Plugin">
+      </startup>
+   </extension>
+
+</plugin>

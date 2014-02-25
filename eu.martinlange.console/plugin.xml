@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="eu.martinlange.console.commands.OpenConsolePreferencesCommandHandler"
+            id="eu.martinlange.console.command.openConsolePreferences"
+            name="Highlight Lines...">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.console.ConsoleView">
+         <command
+               commandId="eu.martinlange.console.command.openConsolePreferences"
+               icon="icons/full/elcl16/highlight.gif"
+               style="push"
+               tooltip="Define expressions that will be highlighted in Console.">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.debug.ui.ConsolePreferencePage"
+            class="eu.martinlange.console.preferences.PatternPreferencePage"
+            id="eu.martinlange.console.preferencePages.Pattern"
+            name="Pattern">
+      </page>
+      <page
+            category="org.eclipse.debug.ui.ConsolePreferencePage"
+            class="eu.martinlange.console.preferences.StylePreferencePage"
+            id="eu.martinlange.console.preferencePages.Styles"
+            name="Styles">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.console.consolePageParticipants">
+      <consolePageParticipant
+            class="eu.martinlange.console.internal.ConsolePageParticipant"
+            id="eu.martinlange.consolePageParticipant">
+         <enablement>
+            <instanceof
+                  value="org.eclipse.ui.console.IConsole">
+            </instanceof>
+         </enablement>
+      </consolePageParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="eu.martinlange.console.internal.PreferencesInitializer">
+      </initializer>
+   </extension>
+
+</plugin>
