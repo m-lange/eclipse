@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Themes
 Bundle-SymbolicName: eu.martinlange.theme;singleton:=true
-Bundle-Version: 1.0.3.qualifier
+Bundle-Version: 1.0.7.qualifier
 Bundle-Activator: eu.martinlange.theme.Plugin
 Bundle-Vendor: Martin Lange
 Require-Bundle: org.eclipse.ui,
