@@ -50,11 +50,6 @@ public class LaunchpadActionGroup extends ActionGroup {
 	@Override
 	public void fillContextMenu(IMenuManager menu) {
 		super.fillContextMenu(menu);
-		
-		menu.add(fCollapseAll);
-		menu.add(new Separator());
-		menu.add(fChangeLaunchModeRun);
-		menu.add(fChangeLaunchModeDebug);
 	}
 
 }

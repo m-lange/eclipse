@@ -25,7 +25,7 @@ public class ChangeLaunchModeAction extends Action {
 			setText("Debug");
 			setImageDescriptor(Plugin.getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_DEBUG));
 		} else if (fLaunchMode.equals(ILaunchManager.PROFILE_MODE)) {
-			setText("Profile");
+			setText("Profile"); 
 			setImageDescriptor(Plugin.getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_PROFILE));
 		}
 
