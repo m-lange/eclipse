@@ -6,10 +6,12 @@ import java.io.StringWriter;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
@@ -17,8 +19,6 @@ import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
-import org.eclipse.ui.handlers.CollapseAllHandler;
-import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 import eu.martinlange.launchpad.Plugin;
 import eu.martinlange.launchpad.model.DefaultContentProvider;
@@ -29,6 +29,7 @@ import eu.martinlange.launchpad.model.FolderAwareContentProvider;
 public class LaunchpadView extends ViewPart {
 
 	private static final String TAG_ROOT_MODE = "rootMode";
+	private static final String TAG_LAUNCH_MODE = "launchMode";
 	private static final String TAG_MEMENTO = "memento";
 
 	public static final int GROUPS_AS_ROOTS = 1;
@@ -39,14 +40,17 @@ public class LaunchpadView extends ViewPart {
 
 	private ElementTree fElementTree;
 	private int fRootMode;
+	private String fLaunchMode;
 
+	protected LaunchpadActionGroup fActionSet;
 	protected FilteredTree fTree;
-	private TreeViewer fViewer;
+	protected TreeViewer fViewer;
 
 
 	public LaunchpadView() {
 		fDialogSettings = Plugin.getDefault().getDialogSettings().addNewSection(getClass().getName());
 
+		fLaunchMode = fDialogSettings.get(TAG_LAUNCH_MODE);
 		try {
 			fRootMode = fDialogSettings.getInt(TAG_ROOT_MODE);
 		} catch (NumberFormatException e) {
@@ -74,6 +78,7 @@ public class LaunchpadView extends ViewPart {
 
 		if (memento != null) {
 			restoreRootMode(memento);
+			restoreLaunchMode(memento);
 		}
 
 		createElementTree();
@@ -109,6 +114,7 @@ public class LaunchpadView extends ViewPart {
 		}
 
 		memento.putInteger(TAG_ROOT_MODE, fRootMode);
+		memento.putString(TAG_LAUNCH_MODE, fLaunchMode);
 
 		if (fElementTree != null)
 			fElementTree.saveState(memento);
@@ -117,6 +123,7 @@ public class LaunchpadView extends ViewPart {
 
 	private void saveDialogSettings() {
 		fDialogSettings.put(TAG_ROOT_MODE, fRootMode);
+		fDialogSettings.put(TAG_LAUNCH_MODE, fLaunchMode);
 	}
 
 
@@ -137,6 +144,25 @@ public class LaunchpadView extends ViewPart {
 		fRootMode = newMode;
 		saveDialogSettings();
 		setProviders();
+	}
+
+
+	private void restoreLaunchMode(IMemento memento) {
+		String value = memento.getString(TAG_LAUNCH_MODE);
+		fLaunchMode = value == null ? ILaunchManager.RUN_MODE : value;
+		if (!fLaunchMode.equals(ILaunchManager.RUN_MODE) || !fLaunchMode.equals(ILaunchManager.DEBUG_MODE))
+			fLaunchMode = ILaunchManager.RUN_MODE;
+	}
+
+
+	public String getLaunchMode() {
+		return fLaunchMode;
+	}
+
+
+	public void launchModeChanged(String newMode) {
+		fLaunchMode = newMode;
+		saveDialogSettings();
 	}
 
 
@@ -163,12 +189,52 @@ public class LaunchpadView extends ViewPart {
 		fViewer = fTree.getViewer();
 
 		fViewer.collapseAll();
-		
+
 		setProviders();
-		
-		IHandlerService hs = (IHandlerService) getSite().getService(IHandlerService.class);
-		hs.activateHandler(CollapseAllHandler.COMMAND_ID, new CollapseAllHandler(fViewer));
+
+		IActionBars actionBars = getViewSite().getActionBars();
+		fActionSet = new LaunchpadActionGroup(this);
+		fActionSet.fillActionBars(actionBars);
+
 	}
+
+
+	// private void createContextMenu() {
+	// // Create menu manager.
+	// MenuManager menuMgr = new MenuManager();
+	// menuMgr.setRemoveAllWhenShown(true);
+	// menuMgr.addMenuListener(new IMenuListener() {
+	// public void menuAboutToShow(IMenuManager mgr) {
+	// fillContextMenu(mgr);
+	// }
+	// });
+	//
+	// // Create menu.
+	// Menu menu = menuMgr.createContextMenu(viewer.getControl());
+	// viewer.getControl().setMenu(menu);
+	//
+	// // Register menu for extension.
+	// getSite().registerContextMenu(menuMgr, viewer);
+	// }
+
+	// // Defined on IWorkbenchPartSite.
+	// public void registerContextMenu(MenuManager menuManager,
+	// ISelectionProvider selectionProvider);
+	// public void registerContextMenu(String menuId, MenuManager menuManager,
+	// ISelectionProvider selectionProvider);
+	// If the user opens our context menu, the fillContextMenu method will be
+	// called. This method adds the Add, Delete and SelectAll actions to the
+	// menu. It is important to notice that a GroupMarker is also added to the
+	// menu for "additions" (). This group will be used as a target for action
+	// extension by other plug-ins. If it does not exist, all of the action
+	// extensions will appear at the end of the menu.
+	// private void fillContextMenu(IMenuManager mgr) {
+	// mgr.add(addItemAction);
+	// mgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+	// mgr.add(deleteItemAction);
+	// mgr.add(new Separator());
+	// mgr.add(selectAllAction);
+	// }
 
 	private void setProviders() {
 		if (fViewer == null)

@@ -23,7 +23,7 @@
       <decorator
             adaptable="true"
             class="eu.martinlange.launchpad.decorators.LaunchConfigurationDecorator"
-            icon="icons/full/obj16/launch_file.gif"
+            icon="icons/full/obj16/configuration.gif"
             id="eu.martinlange.decorator.launchConfiguration"
             label="Launch Configuration"
             lightweight="false"
@@ -61,15 +61,6 @@
             class="eu.martinlange.launchpad.commands.LaunchExtensionContributionFactory"
             locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=group.open">
       </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:eu.martinlange.launchpad.ui.LaunchPad">
-         <command
-               commandId="org.eclipse.ui.navigate.collapseAll"
-               label="Collapse All"
-               style="push">
-         </command>
-      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">
@@ -100,7 +91,7 @@
       <editor
             default="true"
             extensions="launch"
-            icon="icons/full/obj16/launch_file.gif"
+            icon="icons/full/obj16/configuration.gif"
             id="eu.martinlange.editor.launchConfiguration"
             launcher="eu.martinlange.launchpad.internal.LaunchConfigurationEditor"
             name="Launch Configuration Editor">
