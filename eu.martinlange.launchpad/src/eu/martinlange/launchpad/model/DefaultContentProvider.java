@@ -28,6 +28,7 @@ public class DefaultContentProvider implements ITreeContentProvider, ILaunchConf
 			} catch (CoreException e) {
 			}
 		}
+				
 		return EMPTY;
 	}
 
@@ -50,7 +51,7 @@ public class DefaultContentProvider implements ITreeContentProvider, ILaunchConf
 			} catch (CoreException e) {
 			}
 		}
-
+		
 		return false;
 	}
 

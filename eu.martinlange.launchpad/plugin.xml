@@ -63,30 +63,6 @@
       </menuContribution>
    </extension>
    <extension
-         point="org.eclipse.core.runtime.adapters">
-      <factory
-            adaptableType="org.eclipse.core.resources.IFile"
-            class="eu.martinlange.launchpad.internal.LaunchConfigurationAdapterFactory">
-         <adapter
-               type="org.eclipse.debug.core.ILaunchConfiguration">
-         </adapter>
-      </factory>
-      <factory
-            adaptableType="org.eclipse.core.runtime.IPath"
-            class="eu.martinlange.launchpad.internal.LaunchConfigurationAdapterFactory">
-         <adapter
-               type="org.eclipse.debug.core.ILaunchConfiguration">
-         </adapter>
-      </factory>
-      <factory
-            adaptableType="org.eclipse.jface.viewers.ISelection"
-            class="eu.martinlange.launchpad.internal.LaunchConfigurationAdapterFactory">
-         <adapter
-               type="org.eclipse.debug.core.ILaunchConfiguration">
-         </adapter>
-      </factory>
-   </extension>
-   <extension
          point="org.eclipse.ui.editors">
       <editor
             default="true"

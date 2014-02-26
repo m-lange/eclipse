@@ -1,4 +1,4 @@
-package eu.martinlange.launchpad.views;
+package eu.martinlange.launchpad.views.actions;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;

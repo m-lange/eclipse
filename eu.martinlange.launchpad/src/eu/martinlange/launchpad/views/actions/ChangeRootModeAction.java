@@ -1,9 +1,10 @@
-package eu.martinlange.launchpad.views;
+package eu.martinlange.launchpad.views.actions;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import eu.martinlange.launchpad.Plugin;
 import eu.martinlange.launchpad.internal.ISharedImages;
+import eu.martinlange.launchpad.views.LaunchpadView;
 
 public class ChangeRootModeAction extends Action {
 

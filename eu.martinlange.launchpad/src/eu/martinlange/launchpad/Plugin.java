@@ -1,12 +1,19 @@
 package eu.martinlange.launchpad;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import eu.martinlange.launchpad.internal.ISharedImages;
+import eu.martinlange.launchpad.internal.LaunchConfigurationAdapterFactory;
 import eu.martinlange.launchpad.internal.SharedImages;
+import eu.martinlange.launchpad.model.ElementTreeData;
 
 public class Plugin extends AbstractUIPlugin {
 
@@ -23,6 +30,12 @@ public class Plugin extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		
+		IAdapterFactory factory = new LaunchConfigurationAdapterFactory();
+		Platform.getAdapterManager().registerAdapters(factory, ISelection.class);
+		Platform.getAdapterManager().registerAdapters(factory, IPath.class);
+		Platform.getAdapterManager().registerAdapters(factory, IFile.class);
+		Platform.getAdapterManager().registerAdapters(factory, ElementTreeData.class);
 	}
 
 

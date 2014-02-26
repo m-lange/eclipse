@@ -11,6 +11,7 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -167,6 +168,11 @@ public class LaunchpadView extends ViewPart {
 	public void launchModeChanged(String newMode) {
 		fLaunchMode = newMode;
 		saveDialogSettings();
+	}
+	
+	
+	public ISelection getSelection() {
+		return fViewer.getSelection();
 	}
 
 

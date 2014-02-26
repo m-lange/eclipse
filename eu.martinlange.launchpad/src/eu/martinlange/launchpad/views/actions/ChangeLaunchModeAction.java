@@ -1,10 +1,11 @@
-package eu.martinlange.launchpad.views;
+package eu.martinlange.launchpad.views.actions;
 
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import eu.martinlange.launchpad.Plugin;
 import eu.martinlange.launchpad.internal.ISharedImages;
+import eu.martinlange.launchpad.views.LaunchpadView;
 
 public class ChangeLaunchModeAction extends Action {
 
@@ -21,11 +22,15 @@ public class ChangeLaunchModeAction extends Action {
 		if (fLaunchMode.equals(ILaunchManager.RUN_MODE)) {
 			setText("Run");
 			setImageDescriptor(Plugin.getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_RUN));
-		} else if (fLaunchMode.equals(ILaunchManager.DEBUG_MODE)) {
+		}
+
+		else if (fLaunchMode.equals(ILaunchManager.DEBUG_MODE)) {
 			setText("Debug");
 			setImageDescriptor(Plugin.getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_DEBUG));
-		} else if (fLaunchMode.equals(ILaunchManager.PROFILE_MODE)) {
-			setText("Profile"); 
+		}
+
+		else if (fLaunchMode.equals(ILaunchManager.PROFILE_MODE)) {
+			setText("Profile");
 			setImageDescriptor(Plugin.getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_PROFILE));
 		}
 

@@ -8,6 +8,10 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.actions.ActionGroup;
+import eu.martinlange.launchpad.views.actions.ChangeLaunchModeAction;
+import eu.martinlange.launchpad.views.actions.ChangeRootModeAction;
+import eu.martinlange.launchpad.views.actions.CollapseAllAction;
+import eu.martinlange.launchpad.views.actions.LaunchAction;
 
 public class LaunchpadActionGroup extends ActionGroup {
 
@@ -17,6 +21,10 @@ public class LaunchpadActionGroup extends ActionGroup {
 	private ChangeLaunchModeAction fChangeLaunchModeRun;
 	private ChangeLaunchModeAction fChangeLaunchModeDebug;
 	private CollapseAllAction fCollapseAll;
+	
+	private LaunchAction fRun;
+	private LaunchAction fDebug;
+	private LaunchAction fProfile;
 
 
 	public LaunchpadActionGroup(LaunchpadView part) {
@@ -26,6 +34,10 @@ public class LaunchpadActionGroup extends ActionGroup {
 		fChangeLaunchModeRun = new ChangeLaunchModeAction(fPart, ILaunchManager.RUN_MODE);
 		fChangeLaunchModeDebug = new ChangeLaunchModeAction(fPart, ILaunchManager.DEBUG_MODE);
 		fCollapseAll = new CollapseAllAction(fPart.fViewer);
+
+		fRun = new LaunchAction(fPart, ILaunchManager.RUN_MODE);
+		fDebug = new LaunchAction(fPart, ILaunchManager.DEBUG_MODE);
+		fProfile = new LaunchAction(fPart, ILaunchManager.PROFILE_MODE);
 	}
 
 
@@ -49,7 +61,12 @@ public class LaunchpadActionGroup extends ActionGroup {
 	
 	@Override
 	public void fillContextMenu(IMenuManager menu) {
-		super.fillContextMenu(menu);
+		menu.add(fRun);
+		menu.add(fDebug);
+		menu.add(fProfile);
+		menu.add(new Separator());
+		
+		menu.update(true);
 	}
 
 }
