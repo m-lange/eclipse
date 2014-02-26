@@ -6,10 +6,16 @@ import java.io.StringWriter;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
@@ -17,8 +23,6 @@ import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
-import org.eclipse.ui.handlers.CollapseAllHandler;
-import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 import eu.martinlange.launchpad.Plugin;
 import eu.martinlange.launchpad.model.DefaultContentProvider;
@@ -29,6 +33,7 @@ import eu.martinlange.launchpad.model.FolderAwareContentProvider;
 public class LaunchpadView extends ViewPart {
 
 	private static final String TAG_ROOT_MODE = "rootMode";
+	private static final String TAG_LAUNCH_MODE = "launchMode";
 	private static final String TAG_MEMENTO = "memento";
 
 	public static final int GROUPS_AS_ROOTS = 1;
@@ -39,14 +44,17 @@ public class LaunchpadView extends ViewPart {
 
 	private ElementTree fElementTree;
 	private int fRootMode;
+	private String fLaunchMode;
 
+	protected LaunchpadActionGroup fActionSet;
 	protected FilteredTree fTree;
-	private TreeViewer fViewer;
+	protected TreeViewer fViewer;
 
 
 	public LaunchpadView() {
 		fDialogSettings = Plugin.getDefault().getDialogSettings().addNewSection(getClass().getName());
 
+		fLaunchMode = fDialogSettings.get(TAG_LAUNCH_MODE);
 		try {
 			fRootMode = fDialogSettings.getInt(TAG_ROOT_MODE);
 		} catch (NumberFormatException e) {
@@ -74,6 +82,7 @@ public class LaunchpadView extends ViewPart {
 
 		if (memento != null) {
 			restoreRootMode(memento);
+			restoreLaunchMode(memento);
 		}
 
 		createElementTree();
@@ -109,6 +118,7 @@ public class LaunchpadView extends ViewPart {
 		}
 
 		memento.putInteger(TAG_ROOT_MODE, fRootMode);
+		memento.putString(TAG_LAUNCH_MODE, fLaunchMode);
 
 		if (fElementTree != null)
 			fElementTree.saveState(memento);
@@ -117,6 +127,7 @@ public class LaunchpadView extends ViewPart {
 
 	private void saveDialogSettings() {
 		fDialogSettings.put(TAG_ROOT_MODE, fRootMode);
+		fDialogSettings.put(TAG_LAUNCH_MODE, fLaunchMode);
 	}
 
 
@@ -137,6 +148,25 @@ public class LaunchpadView extends ViewPart {
 		fRootMode = newMode;
 		saveDialogSettings();
 		setProviders();
+	}
+
+
+	private void restoreLaunchMode(IMemento memento) {
+		String value = memento.getString(TAG_LAUNCH_MODE);
+		fLaunchMode = value == null ? ILaunchManager.RUN_MODE : value;
+		if (!fLaunchMode.equals(ILaunchManager.RUN_MODE) || !fLaunchMode.equals(ILaunchManager.DEBUG_MODE))
+			fLaunchMode = ILaunchManager.RUN_MODE;
+	}
+
+
+	public String getLaunchMode() {
+		return fLaunchMode;
+	}
+
+
+	public void launchModeChanged(String newMode) {
+		fLaunchMode = newMode;
+		saveDialogSettings();
 	}
 
 
@@ -162,13 +192,26 @@ public class LaunchpadView extends ViewPart {
 		fTree = new FilteredTree(parent, SWT.FULL_SELECTION, new PatternFilter(), true);
 		fViewer = fTree.getViewer();
 
-		fViewer.collapseAll();
-		
 		setProviders();
+		getSite().setSelectionProvider(fViewer);
+
+		IActionBars actionBars = getViewSite().getActionBars();
+		fActionSet = new LaunchpadActionGroup(this);
+		fActionSet.fillActionBars(actionBars);
 		
-		IHandlerService hs = (IHandlerService) getSite().getService(IHandlerService.class);
-		hs.activateHandler(CollapseAllHandler.COMMAND_ID, new CollapseAllHandler(fViewer));
+		MenuManager manager = new MenuManager();
+		manager.setRemoveAllWhenShown(true);
+		manager.addMenuListener(new IMenuListener() {
+			@Override
+			public void menuAboutToShow(IMenuManager manager) {
+				fActionSet.fillContextMenu(manager);
+			}
+		});
+		getSite().registerContextMenu(manager,  getSite().getSelectionProvider());
+		Menu menu = manager.createContextMenu(fViewer.getTree());
+		fViewer.getTree().setMenu(menu);
 	}
+
 
 	private void setProviders() {
 		if (fViewer == null)

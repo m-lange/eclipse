@@ -46,7 +46,7 @@ public class LaunchExtensionContributionFactory extends ExtensionContributionFac
 
 				p.label = "Run";
 				p.icon = Plugin.getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_RUN);
-				p.disabledIcon = Plugin.getSharedImages().getImageDescriptor(ISharedImages.IMG_DTOOL_RUN);
+				p.disabledIcon = Plugin.getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_RUN_DISABLED);
 				p.parameters = new HashMap<String, String>();
 				p.parameters.put(LaunchCommandHandler.PARAMETER_ID, ILaunchManager.RUN_MODE);
 
@@ -64,7 +64,7 @@ public class LaunchExtensionContributionFactory extends ExtensionContributionFac
 
 				p.label = "Debug";
 				p.icon = Plugin.getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_DEBUG);
-				p.disabledIcon = Plugin.getSharedImages().getImageDescriptor(ISharedImages.IMG_DTOOL_DEBUG);
+				p.disabledIcon = Plugin.getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_DEBUG_DISABLED);
 				p.parameters = new HashMap<String, String>();
 				p.parameters.put(LaunchCommandHandler.PARAMETER_ID, ILaunchManager.DEBUG_MODE);
 
@@ -82,7 +82,7 @@ public class LaunchExtensionContributionFactory extends ExtensionContributionFac
 
 				p.label = "Profile";
 				p.icon = Plugin.getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_PROFILE);
-				p.disabledIcon = Plugin.getSharedImages().getImageDescriptor(ISharedImages.IMG_DTOOL_PROFILE);
+				p.disabledIcon = Plugin.getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_PROFILE_DISABLED);
 				p.parameters = new HashMap<String, String>();
 				p.parameters.put(LaunchCommandHandler.PARAMETER_ID, ILaunchManager.PROFILE_MODE);
 

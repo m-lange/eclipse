@@ -15,31 +15,31 @@ public class DefaultLabelProvider extends LabelProvider implements ILabelProvide
 	static {
 		fDelegate = DebugUITools.newDebugModelPresentation();
 	}
-	
-	
+
+
 	@Override
 	public String getText(Object element) {
 		if (element instanceof ElementTreeData) {
 			ElementTreeData e = (ElementTreeData) element;
-			if (e.getType() == String.class)
+			if (e.getData() instanceof String)
 				return (String) e.getData();
-			
+
 			return fDelegate.getText(e.getData());
 		}
 		return fDelegate.getText(element);
 	}
-	
-	
+
+
 	@Override
 	public Image getImage(Object element) {
 		if (element instanceof ElementTreeData) {
 			ElementTreeData e = (ElementTreeData) element;
-			if (e.getType() == String.class)
+			if (e.getData() instanceof String)
 				return Plugin.getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
-			
+
 			return fDelegate.getImage(e.getData());
 		}
-		
+
 		return fDelegate.getImage(element);
 	}
 

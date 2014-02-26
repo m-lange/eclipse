@@ -11,7 +11,7 @@ import org.eclipse.jface.viewers.Viewer;
 public class DefaultContentProvider implements ITreeContentProvider, ILaunchConfigurationListener {
 
 	protected static final Object[] EMPTY = new Object[0];
-	
+
 	protected Viewer fViewer;
 	protected ILaunchManager fLaunchManager;
 
@@ -95,23 +95,22 @@ public class DefaultContentProvider implements ITreeContentProvider, ILaunchConf
 
 	@Override
 	public void launchConfigurationAdded(ILaunchConfiguration configuration) {
-		update();
+		if (fViewer != null) {
+			fViewer.refresh();
+		}
 	}
 
 
 	@Override
 	public void launchConfigurationChanged(ILaunchConfiguration configuration) {
-		update();
+		if (fViewer != null) {
+			fViewer.refresh();
+		}
 	}
 
 
 	@Override
 	public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
-		update();
-	}
-	
-	
-	protected void update() {
 		if (fViewer != null) {
 			fViewer.refresh();
 		}

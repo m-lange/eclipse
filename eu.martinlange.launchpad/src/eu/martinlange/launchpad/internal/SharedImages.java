@@ -14,6 +14,8 @@ public class SharedImages implements ISharedImages {
 	private final static String ICONS_PATH   = "icons/full/";
 	private final static String PATH_ETOOL   = ICONS_PATH + "etool16/";
 	private final static String PATH_DTOOL   = ICONS_PATH + "dtool16/";
+	private final static String PATH_ELCL    = ICONS_PATH + "elcl16/";
+	private final static String PATH_DLCL    = ICONS_PATH + "dlcl16/";
 	private final static String PATH_OBJECT  = ICONS_PATH + "obj16/";
 
 	private static ImageRegistry imageRegistry;
@@ -50,14 +52,19 @@ public class SharedImages implements ISharedImages {
 	private final static void declareImages() {
 
 		declareImage(SharedImages.IMG_OBJ_FOLDER, PATH_OBJECT + "folder.gif");
+		declareImage(SharedImages.IMG_OBJ_FOLDERS, PATH_OBJECT + "folders.gif");
 		
 		declareImage(SharedImages.IMG_ETOOL_RUN, PATH_ETOOL + "run.gif");
+		declareImage(SharedImages.IMG_ETOOL_RUN_DISABLED, PATH_DTOOL + "run.gif");
+		
 		declareImage(SharedImages.IMG_ETOOL_DEBUG, PATH_ETOOL + "debug.gif");
+		declareImage(SharedImages.IMG_ETOOL_DEBUG_DISABLED, PATH_DTOOL + "debug.gif");
+		
 		declareImage(SharedImages.IMG_ETOOL_PROFILE, PATH_ETOOL + "profile.gif");
-
-		declareImage(SharedImages.IMG_DTOOL_RUN, PATH_DTOOL + "run.gif");
-		declareImage(SharedImages.IMG_DTOOL_DEBUG, PATH_DTOOL + "debug.gif");
-		declareImage(SharedImages.IMG_DTOOL_PROFILE, PATH_DTOOL + "profile.gif");
+		declareImage(SharedImages.IMG_ETOOL_PROFILE_DISABLED, PATH_DTOOL + "profile.gif");
+		
+		declareImage(SharedImages.IMG_ELCL_COLLAPSEALL, PATH_ELCL + "collapseall.gif");
+		declareImage(SharedImages.IMG_ELCL_COLLAPSEALL_DISABLED, PATH_DLCL + "collapseall.gif");
 	}
 
 
