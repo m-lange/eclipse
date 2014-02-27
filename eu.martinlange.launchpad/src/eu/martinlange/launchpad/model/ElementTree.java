@@ -14,12 +14,23 @@ import org.eclipse.ui.IMemento;
 
 public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchConfigurationListener {
 
+	public static final ElementTree INSTANCE = new ElementTree();
+	
+	
 	private static final long serialVersionUID = 3792280186446347626L;
 
 	private static final String UNCATEGORIZED = "Uncategorized";
 
+	private ElementTreeData fRootElement;
+	
 
-	public ElementTree(IMemento memento) {
+	private ElementTree() {
+		fRootElement = new ElementTreeData("Launch Pad");
+		add(fRootElement);
+	}
+
+	
+	public void restoreState(IMemento memento) {
 		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 		manager.addLaunchConfigurationListener(this);
 
@@ -28,7 +39,7 @@ public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchCo
 			Collections.addAll(configurations, manager.getLaunchConfigurations());
 		} catch (CoreException e) {
 		}
-
+		
 		// restore folder structure
 		// remove assigned configurations from list
 
@@ -37,12 +48,17 @@ public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchCo
 			uncategorized.add(new ElementTreeData(configuration));
 		}
 
-		add(uncategorized);
+		fRootElement.add(uncategorized);
 	}
-
+	
 
 	public void saveState(IMemento memento) {
 
+	}
+	
+	
+	public ElementTreeData getRoot() {
+		return fRootElement;
 	}
 
 

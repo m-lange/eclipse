@@ -1,4 +1,4 @@
-package eu.martinlange.launchpad.views;
+package eu.martinlange.launchpad.ui.views;
 
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.action.GroupMarker;
@@ -8,10 +8,10 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.actions.ActionGroup;
-import eu.martinlange.launchpad.views.actions.ChangeLaunchModeAction;
-import eu.martinlange.launchpad.views.actions.ChangeRootModeAction;
-import eu.martinlange.launchpad.views.actions.CollapseAllAction;
-import eu.martinlange.launchpad.views.actions.LaunchAction;
+import eu.martinlange.launchpad.ui.views.actions.ChangeLaunchModeAction;
+import eu.martinlange.launchpad.ui.views.actions.ChangeRootModeAction;
+import eu.martinlange.launchpad.ui.views.actions.CollapseAllAction;
+import eu.martinlange.launchpad.ui.views.actions.LaunchAction;
 
 public class LaunchpadActionGroup extends ActionGroup {
 

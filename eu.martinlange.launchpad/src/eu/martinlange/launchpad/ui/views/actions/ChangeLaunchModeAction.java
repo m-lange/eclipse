@@ -1,11 +1,11 @@
-package eu.martinlange.launchpad.views.actions;
+package eu.martinlange.launchpad.ui.views.actions;
 
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import eu.martinlange.launchpad.Plugin;
 import eu.martinlange.launchpad.internal.ISharedImages;
-import eu.martinlange.launchpad.views.LaunchpadView;
+import eu.martinlange.launchpad.ui.views.LaunchpadView;
 
 public class ChangeLaunchModeAction extends Action {
 

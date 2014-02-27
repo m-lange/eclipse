@@ -28,6 +28,11 @@ public class DefaultContentProvider implements ITreeContentProvider, ILaunchConf
 			} catch (CoreException e) {
 			}
 		}
+		
+		if (parentElement instanceof ElementTreeData) {
+			ElementTreeData data = (ElementTreeData) parentElement;
+			return data.getChildren();
+		}
 				
 		return EMPTY;
 	}
@@ -52,6 +57,11 @@ public class DefaultContentProvider implements ITreeContentProvider, ILaunchConf
 			}
 		}
 		
+		if (element instanceof ElementTreeData) {
+			ElementTreeData data = (ElementTreeData) element;
+			return data.hasChildren();
+		}
+		
 		return false;
 	}
 
@@ -67,6 +77,11 @@ public class DefaultContentProvider implements ITreeContentProvider, ILaunchConf
 				return configuration.getType();
 			} catch (CoreException e) {
 			}
+		}
+		
+		if (element instanceof ElementTreeData) {
+			ElementTreeData data = (ElementTreeData) element;
+			return data.getParent();
 		}
 
 		return null;

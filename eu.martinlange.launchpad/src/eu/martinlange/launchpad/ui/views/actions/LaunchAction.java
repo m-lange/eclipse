@@ -1,4 +1,4 @@
-package eu.martinlange.launchpad.views.actions;
+package eu.martinlange.launchpad.ui.views.actions;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -11,7 +11,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import eu.martinlange.launchpad.Plugin;
 import eu.martinlange.launchpad.internal.ISharedImages;
-import eu.martinlange.launchpad.views.LaunchpadView;
+import eu.martinlange.launchpad.ui.views.LaunchpadView;
 
 public class LaunchAction extends Action {
 

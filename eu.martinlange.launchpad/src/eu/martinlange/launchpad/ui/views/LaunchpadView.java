@@ -1,4 +1,4 @@
-package eu.martinlange.launchpad.views;
+package eu.martinlange.launchpad.ui.views;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -11,6 +11,8 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -29,7 +31,6 @@ import eu.martinlange.launchpad.Plugin;
 import eu.martinlange.launchpad.model.DefaultContentProvider;
 import eu.martinlange.launchpad.model.DefaultLabelProvider;
 import eu.martinlange.launchpad.model.ElementTree;
-import eu.martinlange.launchpad.model.FolderAwareContentProvider;
 
 public class LaunchpadView extends ViewPart {
 
@@ -43,13 +44,14 @@ public class LaunchpadView extends ViewPart {
 	private IDialogSettings fDialogSettings;
 	protected IMemento fMemento;
 
-	private ElementTree fElementTree;
 	private int fRootMode;
 	private String fLaunchMode;
 
 	protected LaunchpadActionGroup fActionSet;
 	protected FilteredTree fTree;
 	protected TreeViewer fViewer;
+	protected IContentProvider fContentProvider;
+	protected IBaseLabelProvider fLabelProvider;
 
 
 	public LaunchpadView() {
@@ -121,8 +123,7 @@ public class LaunchpadView extends ViewPart {
 		memento.putInteger(TAG_ROOT_MODE, fRootMode);
 		memento.putString(TAG_LAUNCH_MODE, fLaunchMode);
 
-		if (fElementTree != null)
-			fElementTree.saveState(memento);
+		ElementTree.INSTANCE.saveState(memento);
 	}
 
 
@@ -169,8 +170,8 @@ public class LaunchpadView extends ViewPart {
 		fLaunchMode = newMode;
 		saveDialogSettings();
 	}
-	
-	
+
+
 	public ISelection getSelection() {
 		return fViewer.getSelection();
 	}
@@ -181,13 +182,13 @@ public class LaunchpadView extends ViewPart {
 
 			@Override
 			public void run() throws Exception {
-				fElementTree = new ElementTree(fMemento);
+				ElementTree.INSTANCE.restoreState(fMemento);
 			}
 
 
 			@Override
 			public void handleException(Throwable exception) {
-				fElementTree = new ElementTree(null);
+				ElementTree.INSTANCE.restoreState(null);
 			}
 		});
 	}
@@ -204,7 +205,7 @@ public class LaunchpadView extends ViewPart {
 		IActionBars actionBars = getViewSite().getActionBars();
 		fActionSet = new LaunchpadActionGroup(this);
 		fActionSet.fillActionBars(actionBars);
-		
+
 		MenuManager manager = new MenuManager();
 		manager.setRemoveAllWhenShown(true);
 		manager.addMenuListener(new IMenuListener() {
@@ -213,7 +214,7 @@ public class LaunchpadView extends ViewPart {
 				fActionSet.fillContextMenu(manager);
 			}
 		});
-		getSite().registerContextMenu(manager,  getSite().getSelectionProvider());
+		getSite().registerContextMenu(manager, getSite().getSelectionProvider());
 		Menu menu = manager.createContextMenu(fViewer.getTree());
 		fViewer.getTree().setMenu(menu);
 	}
@@ -223,15 +224,23 @@ public class LaunchpadView extends ViewPart {
 		if (fViewer == null)
 			return;
 
-		if (getRootMode() == FOLDERS_AS_ROOTS) {
-			fViewer.setContentProvider(new FolderAwareContentProvider(fElementTree));
-			fViewer.setLabelProvider(new DefaultLabelProvider());
-		} else {
-			fViewer.setContentProvider(new DefaultContentProvider());
-			fViewer.setLabelProvider(new DefaultLabelProvider());
-		}
+		if (fContentProvider == null)
+			fContentProvider = new DefaultContentProvider();
+		if (fLabelProvider == null)
+			fLabelProvider = new DefaultLabelProvider();
 
-		fViewer.setInput(DebugPlugin.getDefault().getLaunchManager());
+		switch (getRootMode()) {
+		case GROUPS_AS_ROOTS:
+			fViewer.setContentProvider(fContentProvider);
+			fViewer.setLabelProvider(fLabelProvider);
+			fViewer.setInput(DebugPlugin.getDefault().getLaunchManager());
+			break;
+		case FOLDERS_AS_ROOTS:
+			fViewer.setContentProvider(fContentProvider);
+			fViewer.setLabelProvider(fLabelProvider);
+			fViewer.setInput(ElementTree.INSTANCE.getRoot());
+			break;
+		}
 	}
 
 
