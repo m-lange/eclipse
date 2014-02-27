@@ -55,7 +55,9 @@ public class LaunchpadView extends ViewPart {
 
 
 	public LaunchpadView() {
-		fDialogSettings = Plugin.getDefault().getDialogSettings().addNewSection(getClass().getName());
+		fDialogSettings = Plugin.getDefault().getDialogSettings().getSection(getClass().getName());
+		if (fDialogSettings == null)
+			fDialogSettings = Plugin.getDefault().getDialogSettings().addNewSection(getClass().getName());
 
 		fLaunchMode = fDialogSettings.get(TAG_LAUNCH_MODE);
 		try {

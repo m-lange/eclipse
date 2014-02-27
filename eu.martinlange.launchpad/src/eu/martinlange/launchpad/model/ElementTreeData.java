@@ -113,4 +113,15 @@ public class ElementTreeData implements Iterable<ElementTreeData> {
 		return children.iterator();
 	}
 
+	
+	@Override
+	public String toString() {
+		if (data instanceof String)
+			return (String) data;
+		if (data instanceof ILaunchConfiguration)
+			return ((ILaunchConfiguration) data).getName();
+		
+		return super.toString();
+	}
+
 }

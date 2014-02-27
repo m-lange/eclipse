@@ -54,7 +54,7 @@ public class LaunchpadActionGroup extends ActionGroup {
 		toolBar.add(fChangeLaunchModeDebug);
 		toolBar.add(new Separator());
 		toolBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
-
+		
 		toolBar.update(true);
 	}
 	
