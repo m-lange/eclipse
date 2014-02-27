@@ -17,8 +17,13 @@ public interface ISharedImages {
 	public final static String IMG_ETOOL_PROFILE              = "IMG_ETOOL_PROFILE";
 	public final static String IMG_ETOOL_PROFILE_DISABLED     = "IMG_DTOOL_PROFILE_DISABLED ";
 	
+	public final static String IMG_ELCL_NEWFOLDER             = "IMG_ELCL_NEWFOLDER";
+	public final static String IMG_ELCL_NEWFOLDER_DISABLED    = "IMG_ELCL_NEWFOLDER_DISABLED";
+	
 	public final static String IMG_ELCL_COLLAPSEALL           = "IMG_ELCL_COLLAPSEALL";
 	public final static String IMG_ELCL_COLLAPSEALL_DISABLED  = "IMG_ELCL_COLLAPSEALL_DISABLED";
+	
+	public final static String IMG_WIZBAN_NEWFOLDER           = "IMG_WIZBAN_NEWFOLDER";
 	
 
 	public Image getImage(String symbolicName);

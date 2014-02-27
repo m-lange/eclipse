@@ -17,6 +17,7 @@ public class SharedImages implements ISharedImages {
 	private final static String PATH_ELCL    = ICONS_PATH + "elcl16/";
 	private final static String PATH_DLCL    = ICONS_PATH + "dlcl16/";
 	private final static String PATH_OBJECT  = ICONS_PATH + "obj16/";
+	private final static String PATH_WIZBAN  = ICONS_PATH + "wizban/";
 
 	private static ImageRegistry imageRegistry;
 
@@ -62,9 +63,14 @@ public class SharedImages implements ISharedImages {
 		
 		declareImage(SharedImages.IMG_ETOOL_PROFILE, PATH_ETOOL + "profile.gif");
 		declareImage(SharedImages.IMG_ETOOL_PROFILE_DISABLED, PATH_DTOOL + "profile.gif");
+
+		declareImage(SharedImages.IMG_ELCL_NEWFOLDER, PATH_ELCL + "newfolder.gif");
+		declareImage(SharedImages.IMG_ELCL_NEWFOLDER_DISABLED, PATH_DLCL + "newfolder.gif");
 		
 		declareImage(SharedImages.IMG_ELCL_COLLAPSEALL, PATH_ELCL + "collapseall.gif");
 		declareImage(SharedImages.IMG_ELCL_COLLAPSEALL_DISABLED, PATH_DLCL + "collapseall.gif");
+		
+		declareImage(SharedImages.IMG_WIZBAN_NEWFOLDER, PATH_WIZBAN + "newfolder_wiz.png");
 	}
 
 

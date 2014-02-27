@@ -1,8 +1,8 @@
 package eu.martinlange.launchpad.ui.dialogs;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -15,11 +15,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import eu.martinlange.launchpad.Plugin;
+import eu.martinlange.launchpad.internal.ISharedImages;
 import eu.martinlange.launchpad.model.DefaultLabelProvider;
 import eu.martinlange.launchpad.model.ElementTree;
 import eu.martinlange.launchpad.model.ElementTreeData;
 
-public class MoveFolderDialog extends Dialog {
+public class MoveFolderDialog extends TitleAreaDialog {
 
 	private ElementTreeData fElement;
 	
@@ -30,6 +31,15 @@ public class MoveFolderDialog extends Dialog {
 	public MoveFolderDialog(Shell shell, ElementTreeData element) {
 		super(shell);
 		fElement = element;
+	}
+	
+	
+	@Override
+	public void create() {
+		super.create();
+		setTitle("Folder");
+		setMessage("Move to another folder.");
+		setTitleImage(Plugin.getSharedImages().getImage(ISharedImages.IMG_WIZBAN_NEWFOLDER));
 	}
 	
 	

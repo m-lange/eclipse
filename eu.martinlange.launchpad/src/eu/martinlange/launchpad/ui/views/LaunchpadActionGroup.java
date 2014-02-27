@@ -11,33 +11,47 @@ import org.eclipse.ui.actions.ActionGroup;
 import eu.martinlange.launchpad.ui.views.actions.ChangeLaunchModeAction;
 import eu.martinlange.launchpad.ui.views.actions.ChangeRootModeAction;
 import eu.martinlange.launchpad.ui.views.actions.CollapseAllAction;
+import eu.martinlange.launchpad.ui.views.actions.EditAction;
 import eu.martinlange.launchpad.ui.views.actions.LaunchAction;
+import eu.martinlange.launchpad.ui.views.actions.MoveFolderAction;
+import eu.martinlange.launchpad.ui.views.actions.NewFolderAction;
+import eu.martinlange.launchpad.ui.views.actions.RenameFolderAction;
 
 public class LaunchpadActionGroup extends ActionGroup {
 
 	private LaunchpadView fPart;
 
-	private ChangeRootModeAction fChangeRootMode;
-	private ChangeLaunchModeAction fChangeLaunchModeRun;
-	private ChangeLaunchModeAction fChangeLaunchModeDebug;
-	private CollapseAllAction fCollapseAll;
-	
-	private LaunchAction fRun;
-	private LaunchAction fDebug;
-	private LaunchAction fProfile;
+	private ChangeRootModeAction actChangeRootMode;
+	private ChangeLaunchModeAction actChangeLaunchModeRun;
+	private ChangeLaunchModeAction actChangeLaunchModeDebug;
+	private CollapseAllAction actCollapseAll;
+
+	private LaunchAction actRun;
+	private LaunchAction actDebug;
+	private LaunchAction actProfile;
+
+	private NewFolderAction actNewFolder;
+	private MoveFolderAction actMoveFolder;
+	private RenameFolderAction actRenameFolder;
+	private EditAction actEdit;
 
 
 	public LaunchpadActionGroup(LaunchpadView part) {
 		fPart = part;
 
-		fChangeRootMode = new ChangeRootModeAction(fPart);
-		fChangeLaunchModeRun = new ChangeLaunchModeAction(fPart, ILaunchManager.RUN_MODE);
-		fChangeLaunchModeDebug = new ChangeLaunchModeAction(fPart, ILaunchManager.DEBUG_MODE);
-		fCollapseAll = new CollapseAllAction(fPart.fViewer);
+		actChangeRootMode = new ChangeRootModeAction(fPart);
+		actChangeLaunchModeRun = new ChangeLaunchModeAction(fPart, ILaunchManager.RUN_MODE);
+		actChangeLaunchModeDebug = new ChangeLaunchModeAction(fPart, ILaunchManager.DEBUG_MODE);
+		actCollapseAll = new CollapseAllAction(fPart.fViewer);
 
-		fRun = new LaunchAction(fPart, ILaunchManager.RUN_MODE);
-		fDebug = new LaunchAction(fPart, ILaunchManager.DEBUG_MODE);
-		fProfile = new LaunchAction(fPart, ILaunchManager.PROFILE_MODE);
+		actRun = new LaunchAction(fPart, ILaunchManager.RUN_MODE);
+		actDebug = new LaunchAction(fPart, ILaunchManager.DEBUG_MODE);
+		actProfile = new LaunchAction(fPart, ILaunchManager.PROFILE_MODE);
+
+		actNewFolder = new NewFolderAction(fPart);
+		actMoveFolder = new MoveFolderAction(fPart);
+		actRenameFolder = new RenameFolderAction(fPart);
+		actEdit = new EditAction(fPart);
 	}
 
 
@@ -46,26 +60,42 @@ public class LaunchpadActionGroup extends ActionGroup {
 		super.fillActionBars(actionBars);
 
 		IToolBarManager toolBar = actionBars.getToolBarManager();
-		toolBar.add(fCollapseAll);
+		toolBar.add(actCollapseAll);
 		toolBar.add(new Separator());
-		toolBar.add(fChangeRootMode);
+		toolBar.add(actChangeRootMode);
 		toolBar.add(new Separator());
-		toolBar.add(fChangeLaunchModeRun);
-		toolBar.add(fChangeLaunchModeDebug);
+		toolBar.add(actChangeLaunchModeRun);
+		toolBar.add(actChangeLaunchModeDebug);
 		toolBar.add(new Separator());
 		toolBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
-		
+
 		toolBar.update(true);
 	}
-	
-	
+
+
 	@Override
 	public void fillContextMenu(IMenuManager menu) {
-		menu.add(fRun);
-		menu.add(fDebug);
-		menu.add(fProfile);
-		menu.add(new Separator());
-		
+		switch (fPart.getRootMode()) {
+		case LaunchpadView.GROUPS_AS_ROOTS:
+			menu.add(actRun);
+			menu.add(actDebug);
+			menu.add(actProfile);
+			menu.add(new Separator());
+			if (actEdit.isEnabled()) menu.add(actEdit);
+			break;
+		case LaunchpadView.FOLDERS_AS_ROOTS:
+			menu.add(actNewFolder);
+			menu.add(new Separator());
+			menu.add(actRun);
+			menu.add(actDebug);
+			menu.add(actProfile);
+			menu.add(new Separator());
+			menu.add(actMoveFolder);
+			if (actRenameFolder.isEnabled()) menu.add(actRenameFolder);
+			if (actEdit.isEnabled()) menu.add(actEdit);
+			break;
+		}
+
 		menu.update(true);
 	}
 

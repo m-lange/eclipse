@@ -1,8 +1,8 @@
 package eu.martinlange.launchpad.ui.dialogs;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -16,10 +16,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import eu.martinlange.launchpad.Plugin;
+import eu.martinlange.launchpad.internal.ISharedImages;
 import eu.martinlange.launchpad.model.DefaultLabelProvider;
 import eu.martinlange.launchpad.model.ElementTree;
 
-public class NewFolderDialog extends Dialog {
+public class NewFolderDialog extends TitleAreaDialog {
 
 	private StyledText fName;
 	private FilteredTree fTree;
@@ -28,6 +29,15 @@ public class NewFolderDialog extends Dialog {
 	
 	public NewFolderDialog(Shell shell) {
 		super(shell);
+	}
+	
+	
+	@Override
+	public void create() {
+		super.create();
+		setTitle("Folder");
+		setMessage("Create a new folder.");
+		setTitleImage(Plugin.getSharedImages().getImage(ISharedImages.IMG_WIZBAN_NEWFOLDER));
 	}
 	
 	

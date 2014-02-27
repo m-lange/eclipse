@@ -177,6 +177,12 @@ public class LaunchpadView extends ViewPart {
 	public ISelection getSelection() {
 		return fViewer.getSelection();
 	}
+	
+	
+	public void refresh() {
+		fViewer.refresh(true);
+		getViewSite().getActionBars().updateActionBars();
+	}
 
 
 	private void createElementTree() {
