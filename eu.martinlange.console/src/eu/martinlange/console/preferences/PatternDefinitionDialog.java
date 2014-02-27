@@ -7,6 +7,7 @@ import java.util.regex.PatternSyntaxException;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -36,6 +37,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import eu.martinlange.console.Plugin;
 import eu.martinlange.console.model.GroupDefinition;
 import eu.martinlange.console.model.PatternDefinition;
 import eu.martinlange.console.model.StyleDefinition;
@@ -43,6 +45,10 @@ import eu.martinlange.console.model.StyleDefinitionCache;
 
 public class PatternDefinitionDialog extends Dialog implements ModifyListener {
 
+	private String SASH_WEIGHT_0 = "SASH_WEIGHT_0";
+	private String SASH_WEIGHT_1 = "SASH_WEIGHT_1";
+	
+	private SashForm fSash;
 	private StyledText fName;
 	private StyledText fRegex;
 	private Button fPreview;
@@ -89,6 +95,7 @@ public class PatternDefinitionDialog extends Dialog implements ModifyListener {
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		newShell.setText(fTitle);
+		newShell.setMinimumSize(400, 400);
 	}
 
 
@@ -103,12 +110,12 @@ public class PatternDefinitionDialog extends Dialog implements ModifyListener {
 		layout.marginWidth = 0;
 		container.setLayout(layout);
 
-		SashForm sashForm = new SashForm(container, SWT.VERTICAL);
+		fSash = new SashForm(container, SWT.VERTICAL);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		gd.heightHint = 400;
-		sashForm.setLayoutData(gd);
+		fSash.setLayoutData(gd);
 
-		Composite topComp = new Composite(sashForm, SWT.NONE);
+		Composite topComp = new Composite(fSash, SWT.NONE);
 		layout = new GridLayout(2, false);
 		layout.horizontalSpacing = 7;
 		layout.marginRight = 10;
@@ -177,7 +184,7 @@ public class PatternDefinitionDialog extends Dialog implements ModifyListener {
 		fCaseInsensitive.setText("Enables case-insensitive matching.");
 		fCaseInsensitive.setSelection(false);
 
-		Composite bottomComp = new Composite(sashForm, SWT.NONE);
+		Composite bottomComp = new Composite(fSash, SWT.NONE);
 		layout = new GridLayout(2, false);
 		layout.horizontalSpacing = 7;
 		layout.marginRight = 10;
@@ -223,8 +230,19 @@ public class PatternDefinitionDialog extends Dialog implements ModifyListener {
 		fTableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		setupEditingSupport(tableViewerColumn);
 
-		sashForm.setSashWidth(3);
-		sashForm.setWeights(new int[] { 50, 50 });
+		fSash.setSashWidth(3);
+		fSash.setWeights(new int[] { 50, 50 });
+		
+		IDialogSettings settings = getDialogBoundsSettings();
+		if (settings != null) {
+			try {
+				int[] weights = new int[2];
+				weights[0] = settings.getInt(SASH_WEIGHT_0);
+				weights[1] = settings.getInt(SASH_WEIGHT_1);
+				fSash.setWeights(weights);
+			} catch (NumberFormatException e) {
+			}
+		}
 
 		updateControls();
 		updatePreviewControl();
@@ -464,6 +482,34 @@ public class PatternDefinitionDialog extends Dialog implements ModifyListener {
 			int lineCount = fRegex.getLineCount();
 			fRegex.setLineBackground(0, lineCount, fRegex.getBackground());
 		}
+	}
+	
+
+	protected IDialogSettings getDialogBoundsSettings() {
+		IDialogSettings settings = Plugin.getDefault().getDialogSettings().getSection(getClass().getName());
+		if (settings == null)
+			settings = Plugin.getDefault().getDialogSettings().addNewSection(getClass().getName());
+		return settings;
+	}
+
+
+	protected int getDialogBoundsStrategy() {
+		return DIALOG_PERSISTLOCATION | DIALOG_PERSISTSIZE;
+	}
+	
+	
+	@Override
+	public boolean close() {
+		IDialogSettings settings = getDialogBoundsSettings();
+		if (settings != null) {
+			int[] weights = fSash.getWeights();
+			if (weights.length == 2) {
+				settings.put(SASH_WEIGHT_0, weights[0]);
+				settings.put(SASH_WEIGHT_1, weights[1]);
+			}
+		}
+		
+		return super.close();
 	}
 
 }

@@ -3,6 +3,7 @@ package eu.martinlange.console.preferences;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -26,6 +27,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.dialogs.SelectionDialog;
+import eu.martinlange.console.Plugin;
 import eu.martinlange.console.model.StyleDefinition;
 import eu.martinlange.console.model.StyleDefinitionCache;
 
@@ -41,6 +43,13 @@ public class StyleSelectionDialog extends SelectionDialog {
 		super(parentShell);
 		setTitle("Select Style");
 		setMessage("Enter style name prefix or pattern (* = any string, ? = any char):");
+	}
+
+
+	@Override
+	protected void configureShell(Shell shell) {
+		super.configureShell(shell);
+		shell.setMinimumSize(400, 300);
 	}
 
 
@@ -124,5 +133,18 @@ public class StyleSelectionDialog extends SelectionDialog {
 			return false;
 		};
 	};
+
+
+	protected IDialogSettings getDialogBoundsSettings() {
+		IDialogSettings settings = Plugin.getDefault().getDialogSettings().getSection(getClass().getName());
+		if (settings == null)
+			settings = Plugin.getDefault().getDialogSettings().addNewSection(getClass().getName());
+		return settings;
+	}
+
+
+	protected int getDialogBoundsStrategy() {
+		return DIALOG_PERSISTLOCATION | DIALOG_PERSISTSIZE;
+	}
 
 }

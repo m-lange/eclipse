@@ -2,6 +2,7 @@ package eu.martinlange.console.preferences;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.StyleRange;
@@ -19,6 +20,7 @@ import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import eu.martinlange.console.Plugin;
 import eu.martinlange.console.model.StyleDefinition;
 import eu.martinlange.console.swt.FillChooser;
 import eu.martinlange.console.swt.SWTResourceManager;
@@ -78,6 +80,7 @@ public class StyleDefinitionDialog extends Dialog {
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		newShell.setText(fTitle);
+		newShell.setMinimumSize(300, 450);
 	}
 
 
@@ -470,6 +473,19 @@ public class StyleDefinitionDialog extends Dialog {
 			desc.append("Default");
 		}
 		fFontLabel.setText(desc.toString());
+	}
+
+
+	protected IDialogSettings getDialogBoundsSettings() {
+		IDialogSettings settings = Plugin.getDefault().getDialogSettings().getSection(getClass().getName());
+		if (settings == null)
+			settings = Plugin.getDefault().getDialogSettings().addNewSection(getClass().getName());
+		return settings;
+	}
+
+
+	protected int getDialogBoundsStrategy() {
+		return DIALOG_PERSISTLOCATION | DIALOG_PERSISTSIZE;
 	}
 
 }
