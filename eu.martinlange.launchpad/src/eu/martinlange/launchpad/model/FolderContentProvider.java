@@ -1,12 +1,10 @@
-package eu.martinlange.launchpad.ui.dialogs;
+package eu.martinlange.launchpad.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import eu.martinlange.launchpad.model.ElementTree;
-import eu.martinlange.launchpad.model.ElementTreeData;
 
 public class FolderContentProvider implements ITreeContentProvider {
 

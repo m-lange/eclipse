@@ -13,9 +13,9 @@ import eu.martinlange.launchpad.ui.views.actions.ChangeRootModeAction;
 import eu.martinlange.launchpad.ui.views.actions.CollapseAllAction;
 import eu.martinlange.launchpad.ui.views.actions.EditAction;
 import eu.martinlange.launchpad.ui.views.actions.LaunchAction;
-import eu.martinlange.launchpad.ui.views.actions.MoveFolderAction;
-import eu.martinlange.launchpad.ui.views.actions.NewFolderAction;
-import eu.martinlange.launchpad.ui.views.actions.RenameFolderAction;
+import eu.martinlange.launchpad.ui.views.actions.MoveAction;
+import eu.martinlange.launchpad.ui.views.actions.NewAction;
+import eu.martinlange.launchpad.ui.views.actions.RenameAction;
 
 public class LaunchpadActionGroup extends ActionGroup {
 
@@ -30,9 +30,9 @@ public class LaunchpadActionGroup extends ActionGroup {
 	private LaunchAction actDebug;
 	private LaunchAction actProfile;
 
-	private NewFolderAction actNewFolder;
-	private MoveFolderAction actMoveFolder;
-	private RenameFolderAction actRenameFolder;
+	private NewAction actNew;
+	private MoveAction actMove;
+	private RenameAction actRename;
 	private EditAction actEdit;
 
 
@@ -48,9 +48,9 @@ public class LaunchpadActionGroup extends ActionGroup {
 		actDebug = new LaunchAction(fPart, ILaunchManager.DEBUG_MODE);
 		actProfile = new LaunchAction(fPart, ILaunchManager.PROFILE_MODE);
 
-		actNewFolder = new NewFolderAction(fPart);
-		actMoveFolder = new MoveFolderAction(fPart);
-		actRenameFolder = new RenameFolderAction(fPart);
+		actNew = new NewAction(fPart);
+		actMove = new MoveAction(fPart);
+		actRename = new RenameAction(fPart);
 		actEdit = new EditAction(fPart);
 	}
 
@@ -84,14 +84,14 @@ public class LaunchpadActionGroup extends ActionGroup {
 			if (actEdit.isEnabled()) menu.add(actEdit);
 			break;
 		case LaunchpadView.FOLDERS_AS_ROOTS:
-			menu.add(actNewFolder);
+			menu.add(actNew);
 			menu.add(new Separator());
 			menu.add(actRun);
 			menu.add(actDebug);
 			menu.add(actProfile);
 			menu.add(new Separator());
-			menu.add(actMoveFolder);
-			if (actRenameFolder.isEnabled()) menu.add(actRenameFolder);
+			menu.add(actMove);
+			if (actRename.isEnabled()) menu.add(actRename);
 			if (actEdit.isEnabled()) menu.add(actEdit);
 			break;
 		}
