@@ -22,9 +22,13 @@ public class LaunchpadDropListener extends ViewerDropAdapter {
 		ElementTreeData element = (ElementTreeData) data;
 		ElementTreeData target = (ElementTreeData) getCurrentTarget();
 
-		if (target != null && target.equals(element))
-			return false;
-
+		ElementTreeData parent = target;
+		while (parent != null) {
+			if (parent == element)
+				return false;
+			parent = parent.getParent();
+		}
+		
 		element.getParent().remove(element);
 
 		switch (getCurrentLocation()) {
@@ -52,7 +56,16 @@ public class LaunchpadDropListener extends ViewerDropAdapter {
 
 	@Override
 	public boolean validateDrop(Object target, int operation, TransferData transferType) {
-		return true;
+		if (target == null)
+			return true;
+		if (!(target instanceof ElementTreeData))
+			return false;
+		
+		ElementTreeData e = (ElementTreeData) target;
+		if (e.isEditable() && (e.getParent() != null && e.getParent().isEditable()))
+			return true;
+
+		return false;
 	}
 
 }

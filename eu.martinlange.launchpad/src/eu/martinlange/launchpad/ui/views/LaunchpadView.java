@@ -15,7 +15,6 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
@@ -44,7 +43,7 @@ public class LaunchpadView extends ViewPart {
 
 	public static final int GROUPS_AS_ROOTS = 1;
 	public static final int FOLDERS_AS_ROOTS = 2;
-	
+
 	public static final int SORT_DEFAULT = 1;
 	public static final int SORT_BY_NAME = 2;
 
@@ -68,13 +67,13 @@ public class LaunchpadView extends ViewPart {
 			fDialogSettings = Plugin.getDefault().getDialogSettings().addNewSection(getClass().getName());
 
 		fLaunchMode = fDialogSettings.get(TAG_LAUNCH_MODE);
-		
+
 		try {
 			fRootMode = fDialogSettings.getInt(TAG_ROOT_MODE);
 		} catch (NumberFormatException e) {
 			fRootMode = GROUPS_AS_ROOTS;
 		}
-		
+
 		try {
 			fSortMode = fDialogSettings.getInt(TAG_SORT_MODE);
 		} catch (NumberFormatException e) {
@@ -190,8 +189,8 @@ public class LaunchpadView extends ViewPart {
 		fLaunchMode = newMode;
 		saveDialogSettings();
 	}
-	
-	
+
+
 	private void restoreSortMode(IMemento memento) {
 		Integer value = memento.getInteger(TAG_SORT_MODE);
 		fSortMode = value == null ? SORT_BY_NAME : value.intValue();
@@ -214,6 +213,11 @@ public class LaunchpadView extends ViewPart {
 
 	public ISelection getSelection() {
 		return fViewer.getSelection();
+	}
+
+
+	protected TreeViewer getViewer() {
+		return fViewer;
 	}
 
 
@@ -294,20 +298,20 @@ public class LaunchpadView extends ViewPart {
 			break;
 		}
 	}
-	
-	
+
+
 	private void setSorter() {
 		if (fViewer == null)
 			return;
-		
-		switch(fSortMode)
+
+		switch (fSortMode)
 		{
 		case SORT_DEFAULT:
 			fViewer.setSorter(null);
 			fViewer.refresh(true);
 			break;
 		case SORT_BY_NAME:
-			fViewer.setSorter(new ViewerSorter());
+			fViewer.setSorter(new LaunchpadSorter());
 			fViewer.refresh(true);
 			break;
 		}

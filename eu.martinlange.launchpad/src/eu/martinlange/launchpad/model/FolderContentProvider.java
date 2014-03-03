@@ -85,7 +85,7 @@ public class FolderContentProvider implements ITreeContentProvider {
 	private Collection<ElementTreeData> filter(ElementTreeData[] input) {
 		List<ElementTreeData> result = new ArrayList<ElementTreeData>();
 		for(ElementTreeData e : input) {
-			if (e.getData() instanceof String)
+			if (e.isEditable() && e.getData() instanceof String)
 				result.add(e);
 		}
 		return result;

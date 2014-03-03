@@ -167,6 +167,16 @@ public class MoveAction extends Action {
 
 		protected boolean isValid() {
 			if (fViewer == null || fViewer.getSelection().isEmpty()) return false;
+			
+			IStructuredSelection selection = (IStructuredSelection) fViewer.getSelection();
+			ElementTreeData parent = (ElementTreeData) selection.getFirstElement();
+			
+			while (parent != null) {
+				if (parent == fElement)
+					return false;
+				parent = parent.getParent();
+			}
+			
 			return true;
 		}
 

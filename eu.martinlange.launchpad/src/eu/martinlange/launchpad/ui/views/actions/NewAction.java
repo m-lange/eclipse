@@ -92,6 +92,9 @@ public class NewAction extends Action {
 					fViewer.setSelection(new StructuredSelection(element), true);
 				else
 					fViewer.setSelection(new StructuredSelection(element.getParent()), true);
+				
+				if (fViewer.getSelection().isEmpty())
+					fViewer.setSelection(new StructuredSelection(ElementTree.INSTANCE.getRoot()), true);
 			}
 		}
 
