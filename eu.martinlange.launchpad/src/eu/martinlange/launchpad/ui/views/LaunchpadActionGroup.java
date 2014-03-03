@@ -4,6 +4,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -16,6 +17,7 @@ import eu.martinlange.launchpad.ui.views.actions.LaunchAction;
 import eu.martinlange.launchpad.ui.views.actions.MoveAction;
 import eu.martinlange.launchpad.ui.views.actions.NewAction;
 import eu.martinlange.launchpad.ui.views.actions.RenameAction;
+import eu.martinlange.launchpad.ui.views.actions.SortByNameAction;
 
 public class LaunchpadActionGroup extends ActionGroup {
 
@@ -34,6 +36,8 @@ public class LaunchpadActionGroup extends ActionGroup {
 	private MoveAction actMove;
 	private RenameAction actRename;
 	private EditAction actEdit;
+	
+	private SortByNameAction actSortByName;
 
 
 	public LaunchpadActionGroup(LaunchpadView part) {
@@ -52,6 +56,8 @@ public class LaunchpadActionGroup extends ActionGroup {
 		actMove = new MoveAction(fPart);
 		actRename = new RenameAction(fPart);
 		actEdit = new EditAction(fPart);
+		
+		actSortByName = new SortByNameAction(fPart);
 	}
 
 
@@ -60,6 +66,16 @@ public class LaunchpadActionGroup extends ActionGroup {
 		super.fillActionBars(actionBars);
 
 		IToolBarManager toolBar = actionBars.getToolBarManager();
+		fillToolBar(toolBar);
+		toolBar.update(true);
+
+		IMenuManager menu = actionBars.getMenuManager();
+		fillViewMenu(menu);
+		menu.update(true);
+	}
+
+
+	protected void fillToolBar(IToolBarManager toolBar) {
 		toolBar.add(actCollapseAll);
 		toolBar.add(new Separator());
 		toolBar.add(actChangeRootMode);
@@ -68,8 +84,17 @@ public class LaunchpadActionGroup extends ActionGroup {
 		toolBar.add(actChangeLaunchModeDebug);
 		toolBar.add(new Separator());
 		toolBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+	}
 
-		toolBar.update(true);
+
+	protected void fillViewMenu(IMenuManager menu) {
+		IMenuManager launch = new MenuManager("Default Launch Mode");
+		launch.add(actChangeLaunchModeRun);
+		launch.add(actChangeLaunchModeDebug);
+
+		menu.add(launch);
+		menu.add(new Separator());
+		menu.add(actSortByName);
 	}
 
 
@@ -90,7 +115,7 @@ public class LaunchpadActionGroup extends ActionGroup {
 			menu.add(actDebug);
 			menu.add(actProfile);
 			menu.add(new Separator());
-			menu.add(actMove);
+			if (actMove.isEnabled()) menu.add(actMove);
 			if (actRename.isEnabled()) menu.add(actRename);
 			if (actEdit.isEnabled()) menu.add(actEdit);
 			break;

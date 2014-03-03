@@ -62,7 +62,7 @@ public class MoveAction extends Action {
 			return false;
 
 		Object obj = ((IStructuredSelection) selection).getFirstElement();
-		return obj instanceof ElementTreeData;
+		return (obj instanceof ElementTreeData) && ((ElementTreeData) obj).isEditable();
 	}
 
 
@@ -92,6 +92,19 @@ public class MoveAction extends Action {
 			fTree.setFocus();
 
 			fViewer.setSelection(new StructuredSelection(fElement.getParent()), true);
+		}
+
+
+		@Override
+		protected void okPressed() {
+			ISelection selection = fViewer.getSelection();
+			if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
+				ElementTreeData element = (ElementTreeData) ((IStructuredSelection) selection).getFirstElement();
+				fElement.getParent().remove(fElement);
+				element.add(fElement);
+			}
+
+			super.okPressed();
 		}
 
 

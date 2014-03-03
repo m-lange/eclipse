@@ -54,7 +54,7 @@ public class RenameAction extends Action {
 			return false;
 
 		Object obj = ((IStructuredSelection) selection).getFirstElement();
-		return obj instanceof ElementTreeData && ((ElementTreeData) obj).getData() instanceof String;
+		return obj instanceof ElementTreeData && ((ElementTreeData) obj).getData() instanceof String && ((ElementTreeData) obj).isEditable();
 	}
 
 

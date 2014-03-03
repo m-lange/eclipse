@@ -15,7 +15,10 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
@@ -36,16 +39,21 @@ public class LaunchpadView extends ViewPart {
 
 	private static final String TAG_ROOT_MODE = "rootMode";
 	private static final String TAG_LAUNCH_MODE = "launchMode";
+	private static final String TAG_SORT_MODE = "sortMode";
 	private static final String TAG_MEMENTO = "memento";
 
 	public static final int GROUPS_AS_ROOTS = 1;
 	public static final int FOLDERS_AS_ROOTS = 2;
+	
+	public static final int SORT_DEFAULT = 1;
+	public static final int SORT_BY_NAME = 2;
 
 	private IDialogSettings fDialogSettings;
 	protected IMemento fMemento;
 
 	private int fRootMode;
 	private String fLaunchMode;
+	private int fSortMode;
 
 	protected LaunchpadActionGroup fActionSet;
 	protected FilteredTree fTree;
@@ -60,10 +68,17 @@ public class LaunchpadView extends ViewPart {
 			fDialogSettings = Plugin.getDefault().getDialogSettings().addNewSection(getClass().getName());
 
 		fLaunchMode = fDialogSettings.get(TAG_LAUNCH_MODE);
+		
 		try {
 			fRootMode = fDialogSettings.getInt(TAG_ROOT_MODE);
 		} catch (NumberFormatException e) {
 			fRootMode = GROUPS_AS_ROOTS;
+		}
+		
+		try {
+			fSortMode = fDialogSettings.getInt(TAG_SORT_MODE);
+		} catch (NumberFormatException e) {
+			fSortMode = SORT_BY_NAME;
 		}
 	}
 
@@ -88,6 +103,7 @@ public class LaunchpadView extends ViewPart {
 		if (memento != null) {
 			restoreRootMode(memento);
 			restoreLaunchMode(memento);
+			restoreSortMode(memento);
 		}
 
 		createElementTree();
@@ -124,6 +140,7 @@ public class LaunchpadView extends ViewPart {
 
 		memento.putInteger(TAG_ROOT_MODE, fRootMode);
 		memento.putString(TAG_LAUNCH_MODE, fLaunchMode);
+		memento.putInteger(TAG_SORT_MODE, fSortMode);
 
 		ElementTree.INSTANCE.saveState(memento);
 	}
@@ -132,6 +149,7 @@ public class LaunchpadView extends ViewPart {
 	private void saveDialogSettings() {
 		fDialogSettings.put(TAG_ROOT_MODE, fRootMode);
 		fDialogSettings.put(TAG_LAUNCH_MODE, fLaunchMode);
+		fDialogSettings.put(TAG_SORT_MODE, fSortMode);
 	}
 
 
@@ -172,13 +190,33 @@ public class LaunchpadView extends ViewPart {
 		fLaunchMode = newMode;
 		saveDialogSettings();
 	}
+	
+	
+	private void restoreSortMode(IMemento memento) {
+		Integer value = memento.getInteger(TAG_SORT_MODE);
+		fSortMode = value == null ? SORT_BY_NAME : value.intValue();
+		if (fSortMode != SORT_BY_NAME && fSortMode != SORT_DEFAULT)
+			fSortMode = SORT_BY_NAME;
+	}
+
+
+	public int getSortMode() {
+		return fSortMode;
+	}
+
+
+	public void sortModeChanged(int newMode) {
+		fSortMode = newMode;
+		saveDialogSettings();
+		setSorter();
+	}
 
 
 	public ISelection getSelection() {
 		return fViewer.getSelection();
 	}
-	
-	
+
+
 	public void refresh() {
 		fViewer.refresh(true);
 		getViewSite().getActionBars().updateActionBars();
@@ -208,7 +246,13 @@ public class LaunchpadView extends ViewPart {
 		fViewer = fTree.getViewer();
 
 		setProviders();
+		setSorter();
 		getSite().setSelectionProvider(fViewer);
+
+		int operations = DND.DROP_MOVE;
+		Transfer[] transferTypes = new Transfer[] { LaunchpadTransfer.getInstance() };
+		fViewer.addDragSupport(operations, transferTypes, new LaunchpadDragListener(fViewer));
+		fViewer.addDropSupport(operations, transferTypes, new LaunchpadDropListener(fViewer));
 
 		IActionBars actionBars = getViewSite().getActionBars();
 		fActionSet = new LaunchpadActionGroup(this);
@@ -247,6 +291,24 @@ public class LaunchpadView extends ViewPart {
 			fViewer.setContentProvider(fContentProvider);
 			fViewer.setLabelProvider(fLabelProvider);
 			fViewer.setInput(ElementTree.INSTANCE.getRoot());
+			break;
+		}
+	}
+	
+	
+	private void setSorter() {
+		if (fViewer == null)
+			return;
+		
+		switch(fSortMode)
+		{
+		case SORT_DEFAULT:
+			fViewer.setSorter(null);
+			fViewer.refresh(true);
+			break;
+		case SORT_BY_NAME:
+			fViewer.setSorter(new ViewerSorter());
+			fViewer.refresh(true);
 			break;
 		}
 	}
