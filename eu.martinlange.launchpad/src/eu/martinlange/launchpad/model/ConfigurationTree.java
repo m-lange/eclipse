@@ -12,19 +12,19 @@ import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.ui.IMemento;
 
-public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchConfigurationListener {
+public class ConfigurationTree extends ArrayList<ConfigurationTreeNode> implements ILaunchConfigurationListener {
 
-	public static final ElementTree INSTANCE = new ElementTree();
+	public static final ConfigurationTree INSTANCE = new ConfigurationTree();
 
 	private static final long serialVersionUID = 3792280186446347626L;
 
 	private static final String UNCATEGORIZED = "Uncategorized";
 
-	private ElementTreeData fRootElement;
+	private ConfigurationTreeNode fRootElement;
 
 
-	private ElementTree() {
-		fRootElement = new ElementTreeData("Launch Pad");
+	private ConfigurationTree() {
+		fRootElement = new ConfigurationTreeNode("Launch Pad");
 		add(fRootElement);
 	}
 
@@ -41,19 +41,19 @@ public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchCo
 
 		restoreState(getRoot(), memento, configurations);
 
-		ElementTreeData uncategorized = new ElementTreeData(UNCATEGORIZED);
+		ConfigurationTreeNode uncategorized = new ConfigurationTreeNode(UNCATEGORIZED);
 		uncategorized.setEditable(false);
 		for (ILaunchConfiguration configuration : configurations) {
-			uncategorized.add(new ElementTreeData(configuration));
+			uncategorized.add(new ConfigurationTreeNode(configuration));
 		}
 
 		fRootElement.add(uncategorized);
 	}
 
 
-	private void restoreState(ElementTreeData parent, IMemento memento, List<ILaunchConfiguration> configurations) {
+	private void restoreState(ConfigurationTreeNode parent, IMemento memento, List<ILaunchConfiguration> configurations) {
 		for (IMemento folder : memento.getChildren("folder")) {
-			ElementTreeData element = new ElementTreeData(folder.getString("name"));
+			ConfigurationTreeNode element = new ConfigurationTreeNode(folder.getString("name"));
 			parent.add(element);
 			restoreState(element, folder, configurations);
 		}
@@ -63,7 +63,7 @@ public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchCo
 			if (configuration == null)
 				continue;
 
-			ElementTreeData element = new ElementTreeData(configuration);
+			ConfigurationTreeNode element = new ConfigurationTreeNode(configuration);
 			parent.add(element);
 		}
 	}
@@ -74,8 +74,8 @@ public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchCo
 	}
 
 
-	private void saveState(ElementTreeData parent, IMemento memento) {
-		for (ElementTreeData element : parent.getChildren()) {
+	private void saveState(ConfigurationTreeNode parent, IMemento memento) {
+		for (ConfigurationTreeNode element : parent.getChildren()) {
 			if (!element.isEditable())
 				continue;
 
@@ -93,17 +93,17 @@ public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchCo
 	}
 
 
-	public ElementTreeData getRoot() {
+	public ConfigurationTreeNode getRoot() {
 		return fRootElement;
 	}
 
 
-	public ElementTreeData getById(String id) {
-		Queue<ElementTreeData> remain = new LinkedList<ElementTreeData>();
+	public ConfigurationTreeNode getById(String id) {
+		Queue<ConfigurationTreeNode> remain = new LinkedList<ConfigurationTreeNode>();
 		remain.addAll(this);
 
 		while (!remain.isEmpty()) {
-			ElementTreeData e = remain.poll();
+			ConfigurationTreeNode e = remain.poll();
 			if (e.getId().equals(id))
 				return e;
 
@@ -127,9 +127,9 @@ public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchCo
 
 	@Override
 	public void launchConfigurationAdded(ILaunchConfiguration configuration) {
-		for (ElementTreeData element : this) {
+		for (ConfigurationTreeNode element : this) {
 			if (element.getData() instanceof String && (String) element.getData() == UNCATEGORIZED) {
-				element.add(new ElementTreeData(configuration));
+				element.add(new ConfigurationTreeNode(configuration));
 			}
 		}
 	}
@@ -137,13 +137,13 @@ public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchCo
 
 	@Override
 	public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
-		Queue<ElementTreeData> remain = new LinkedList<ElementTreeData>();
+		Queue<ConfigurationTreeNode> remain = new LinkedList<ConfigurationTreeNode>();
 		remain.addAll(this);
 
-		ElementTreeData old = new ElementTreeData(configuration);
+		ConfigurationTreeNode old = new ConfigurationTreeNode(configuration);
 
 		while (!remain.isEmpty()) {
-			ElementTreeData e = remain.poll();
+			ConfigurationTreeNode e = remain.poll();
 			e.remove(old);
 			Collections.addAll(remain, e.getChildren());
 		}

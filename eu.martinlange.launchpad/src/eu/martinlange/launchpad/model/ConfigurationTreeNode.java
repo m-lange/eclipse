@@ -6,36 +6,36 @@ import java.util.List;
 import java.util.UUID;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
-public class ElementTreeData implements Iterable<ElementTreeData> {
+public class ConfigurationTreeNode implements Iterable<ConfigurationTreeNode> {
 
-	private ElementTreeData parent;
-	private List<ElementTreeData> children;
+	private ConfigurationTreeNode parent;
+	private List<ConfigurationTreeNode> children;
 
 	private String id;
 	private Object data;
 	private boolean editable;
 
 
-	public ElementTreeData() {
+	public ConfigurationTreeNode() {
 		id = UUID.randomUUID().toString();
-		children = new ArrayList<ElementTreeData>();
+		children = new ArrayList<ConfigurationTreeNode>();
 		editable = true;
 	}
 
 
-	public ElementTreeData(String text) {
+	public ConfigurationTreeNode(String text) {
 		this();
 		setData(text);
 	}
 
 
-	public ElementTreeData(ILaunchConfiguration configuration) {
+	public ConfigurationTreeNode(ILaunchConfiguration configuration) {
 		this();
 		setData(configuration);
 	}
 
 
-	public boolean add(ElementTreeData element) {
+	public boolean add(ConfigurationTreeNode element) {
 		if (element == null)
 			throw new IllegalArgumentException("element");
 
@@ -47,7 +47,7 @@ public class ElementTreeData implements Iterable<ElementTreeData> {
 	}
 
 
-	public boolean add(int index, ElementTreeData element) {
+	public boolean add(int index, ConfigurationTreeNode element) {
 		if (element == null)
 			throw new IllegalArgumentException("element");
 
@@ -60,12 +60,12 @@ public class ElementTreeData implements Iterable<ElementTreeData> {
 	}
 
 
-	public int indexOf(ElementTreeData element) {
+	public int indexOf(ConfigurationTreeNode element) {
 		return children.indexOf(element);
 	}
 
 
-	public boolean remove(ElementTreeData element) {
+	public boolean remove(ConfigurationTreeNode element) {
 		if (element == null)
 			throw new IllegalArgumentException("element");
 
@@ -78,17 +78,17 @@ public class ElementTreeData implements Iterable<ElementTreeData> {
 	}
 
 
-	public ElementTreeData[] getChildren() {
-		return children.toArray(new ElementTreeData[0]);
+	public ConfigurationTreeNode[] getChildren() {
+		return children.toArray(new ConfigurationTreeNode[0]);
 	}
 
 
-	public ElementTreeData getParent() {
+	public ConfigurationTreeNode getParent() {
 		return parent;
 	}
 
 
-	public void setParent(ElementTreeData parent) {
+	public void setParent(ConfigurationTreeNode parent) {
 		if (parent == null)
 			throw new IllegalArgumentException("parent");
 
@@ -123,10 +123,10 @@ public class ElementTreeData implements Iterable<ElementTreeData> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof ElementTreeData))
+		if (!(obj instanceof ConfigurationTreeNode))
 			return false;
 
-		ElementTreeData e = (ElementTreeData) obj;
+		ConfigurationTreeNode e = (ConfigurationTreeNode) obj;
 
 		if (getData() instanceof String && e.getData() instanceof String) {
 			String s1 = (String) getId();
@@ -145,7 +145,7 @@ public class ElementTreeData implements Iterable<ElementTreeData> {
 
 
 	@Override
-	public Iterator<ElementTreeData> iterator() {
+	public Iterator<ConfigurationTreeNode> iterator() {
 		return children.iterator();
 	}
 

@@ -15,7 +15,7 @@ import eu.martinlange.launchpad.Plugin;
 public class LaunchCommandHandler extends AbstractHandler implements IHandler {
 
 	public static final String COMMAND_ID = "eu.martinlange.launchpad.command.launch";
-	public static final String PARAMETER_ID = "eu.martinlange.launchpad.command.launch.mode";
+	public static final String PARAMETER_ID = "eu.martinlange.launchpad.launchModeParameter";
 
 
 	@Override

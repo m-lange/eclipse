@@ -8,7 +8,7 @@ import org.eclipse.jface.viewers.BaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.swt.graphics.Image;
 
-public class LaunchConfigurationDecorator extends BaseLabelProvider implements ILabelDecorator {
+public class ConfigurationDecorator extends BaseLabelProvider implements ILabelDecorator {
 
 	private static IDebugModelPresentation fDelegate;
 

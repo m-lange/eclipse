@@ -6,7 +6,8 @@ Bundle-Version: 1.3.7.qualifier
 Bundle-Activator: eu.martinlange.launchpad.Plugin
 Bundle-Vendor: Martin Lange
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.ui.navigator;bundle-version="3.5.300"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.core.expressions,

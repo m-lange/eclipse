@@ -1,4 +1,4 @@
-package eu.martinlange.launchpad.model;
+package eu.martinlange.launchpad.ui.views;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -7,8 +7,9 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
+import eu.martinlange.launchpad.model.ConfigurationTreeNode;
 
-public class DefaultContentProvider implements ITreeContentProvider, ILaunchConfigurationListener {
+public class LaunchpadContentProvider implements ITreeContentProvider, ILaunchConfigurationListener {
 
 	protected static final Object[] EMPTY = new Object[0];
 
@@ -28,12 +29,12 @@ public class DefaultContentProvider implements ITreeContentProvider, ILaunchConf
 			} catch (CoreException e) {
 			}
 		}
-		
-		if (parentElement instanceof ElementTreeData) {
-			ElementTreeData data = (ElementTreeData) parentElement;
+
+		if (parentElement instanceof ConfigurationTreeNode) {
+			ConfigurationTreeNode data = (ConfigurationTreeNode) parentElement;
 			return data.getChildren();
 		}
-				
+
 		return EMPTY;
 	}
 
@@ -56,12 +57,12 @@ public class DefaultContentProvider implements ITreeContentProvider, ILaunchConf
 			} catch (CoreException e) {
 			}
 		}
-		
-		if (element instanceof ElementTreeData) {
-			ElementTreeData data = (ElementTreeData) element;
+
+		if (element instanceof ConfigurationTreeNode) {
+			ConfigurationTreeNode data = (ConfigurationTreeNode) element;
 			return data.hasChildren();
 		}
-		
+
 		return false;
 	}
 
@@ -78,9 +79,9 @@ public class DefaultContentProvider implements ITreeContentProvider, ILaunchConf
 			} catch (CoreException e) {
 			}
 		}
-		
-		if (element instanceof ElementTreeData) {
-			ElementTreeData data = (ElementTreeData) element;
+
+		if (element instanceof ConfigurationTreeNode) {
+			ConfigurationTreeNode data = (ConfigurationTreeNode) element;
 			return data.getParent();
 		}
 

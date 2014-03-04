@@ -25,6 +25,9 @@ public interface ISharedImages {
 	
 	public final static String IMG_WIZBAN_NEWFOLDER           = "IMG_WIZBAN_NEWFOLDER";
 	
+	public final static String CLEAR_ICON                     = "CLEAR_ICON";
+	public final static String DISABLED_CLEAR_ICON            = "DISABLED_CLEAR_ICON";
+	
 
 	public Image getImage(String symbolicName);
 

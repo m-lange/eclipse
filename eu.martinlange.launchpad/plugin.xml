@@ -22,7 +22,7 @@
          point="org.eclipse.ui.decorators">
       <decorator
             adaptable="true"
-            class="eu.martinlange.launchpad.decorators.LaunchConfigurationDecorator"
+            class="eu.martinlange.launchpad.decorators.ConfigurationDecorator"
             icon="icons/full/obj16/configuration.gif"
             id="eu.martinlange.decorator.launchConfiguration"
             label="Launch Configuration"
@@ -43,8 +43,8 @@
             id="eu.martinlange.launchpad.command.launch"
             name="Launch">
          <commandParameter
-               id="eu.martinlange.launchpad.command.launch.mode"
-               name="Launch Mode"
+               id="eu.martinlange.launchpad.launchModeParameter"
+               name="mode"
                optional="false">
          </commandParameter>
       </command>
@@ -69,7 +69,7 @@
             extensions="launch"
             icon="icons/full/obj16/configuration.gif"
             id="eu.martinlange.editor.launchConfiguration"
-            launcher="eu.martinlange.launchpad.internal.LaunchConfigurationEditor"
+            launcher="eu.martinlange.launchpad.internal.ConfigurationEditor"
             name="Launch Configuration Editor">
          <contentTypeBinding
                contentTypeId="eu.martinlange.launchConfiguration">
@@ -80,13 +80,130 @@
          point="org.eclipse.ui.views">
       <view
             allowMultiple="false"
-            class="eu.martinlange.launchpad.ui.views.LaunchpadView"
+            class="eu.martinlange.launchpad.ui.views.LaunchpadPart"
             fastViewWidthRatio="0.35"
             icon="icons/full/eview16/launchpad.gif"
             id="eu.martinlange.launchpad.ui.LaunchPad"
             name="Launch Pad"
             restorable="true">
       </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="eu.martinlange.launchpad.commands.RadioStateHandler"
+            id="eu.martinlange.launchpad.command.launchMode"
+            name="default launch mode">
+         <commandParameter
+               id="org.eclipse.ui.commands.radioStateParameter"
+               name="launch_mode"
+               optional="false">
+         </commandParameter>
+         <state
+               class="org.eclipse.ui.handlers.RadioState:run"
+               id="org.eclipse.ui.commands.radioState">
+         </state>
+      </command>
+      <command
+            defaultHandler="eu.martinlange.launchpad.commands.ToggleStateHandler"
+            id="eu.martinlange.launchpad.command.rootMode"
+            name="root mode">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:false"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:eu.martinlange.launchpad.ui.LaunchPad">
+         <separator
+               name="eu.martinlange.launchpad.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="eu.martinlange.launchpad.command.rootMode"
+               icon="icons/full/obj16/folders.gif"
+               label="Categorized"
+               style="toggle"
+               tooltip="Categorized">
+         </command>
+         <separator
+               name="eu.martinlange.launchpad.separator2"
+               visible="true">
+         </separator>
+         <command
+               commandId="eu.martinlange.launchpad.command.launchMode"
+               disabledIcon="icons/full/dtool16/run.gif"
+               icon="icons/full/etool16/run.gif"
+               label="Run"
+               style="radio"
+               tooltip="Run">
+            <parameter
+                  name="org.eclipse.ui.commands.radioStateParameter"
+                  value="run">
+            </parameter>
+         </command>
+         <command
+               commandId="eu.martinlange.launchpad.command.launchMode"
+               disabledIcon="icons/full/dtool16/debug.gif"
+               icon="icons/full/etool16/debug.gif"
+               label="Debug"
+               style="radio"
+               tooltip="Debug">
+            <parameter
+                  name="org.eclipse.ui.commands.radioStateParameter"
+                  value="debug">
+            </parameter>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewer
+            viewerId="eu.martinlange.launchpad.ui.LaunchPad">
+         <options>
+            <property
+                  name="org.eclipse.ui.navigator.hideLinkWithEditorAction"
+                  value="true">
+            </property>
+         </options>
+      </viewer>
+      <viewerContentBinding
+            viewerId="eu.martinlange.launchpad.ui.LaunchPad">
+         <includes>
+            <contentExtension
+                  isRoot="true"
+                  pattern="eu.martinlange.launchpad.launchpadContent">
+            </contentExtension></includes>
+      </viewerContentBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <navigatorContent
+            activeByDefault="true"
+            contentProvider="eu.martinlange.launchpad.ui.views.LaunchpadContentProvider"
+            icon="icons/full/obj16/configuration.gif"
+            id="eu.martinlange.launchpad.launchpadContent"
+            labelProvider="eu.martinlange.launchpad.ui.views.LaunchpadLabelProvider"
+            name="Launch Configuration">
+         <triggerPoints>
+            <or>
+               <instanceof
+                     value="org.eclipse.debug.core.ILaunchManager">
+               </instanceof></or>
+         </triggerPoints>
+         <possibleChildren>
+            <or>
+               <instanceof
+                     value="org.eclipse.debug.core.ILaunchManager">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.debug.core.ILaunchConfigurationType">
+               </instanceof></or></possibleChildren>
+      </navigatorContent>
    </extension>
 
 </plugin>

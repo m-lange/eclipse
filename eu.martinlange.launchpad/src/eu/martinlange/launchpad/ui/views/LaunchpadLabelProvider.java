@@ -1,4 +1,4 @@
-package eu.martinlange.launchpad.model;
+package eu.martinlange.launchpad.ui.views;
 
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
@@ -7,8 +7,9 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import eu.martinlange.launchpad.Plugin;
 import eu.martinlange.launchpad.internal.ISharedImages;
+import eu.martinlange.launchpad.model.ConfigurationTreeNode;
 
-public class DefaultLabelProvider extends LabelProvider implements ILabelProvider {
+public class LaunchpadLabelProvider extends LabelProvider implements ILabelProvider {
 
 	private static IDebugModelPresentation fDelegate;
 
@@ -19,8 +20,8 @@ public class DefaultLabelProvider extends LabelProvider implements ILabelProvide
 
 	@Override
 	public String getText(Object element) {
-		if (element instanceof ElementTreeData) {
-			ElementTreeData e = (ElementTreeData) element;
+		if (element instanceof ConfigurationTreeNode) {
+			ConfigurationTreeNode e = (ConfigurationTreeNode) element;
 			if (e.getData() instanceof String)
 				return (String) e.getData();
 
@@ -32,8 +33,8 @@ public class DefaultLabelProvider extends LabelProvider implements ILabelProvide
 
 	@Override
 	public Image getImage(Object element) {
-		if (element instanceof ElementTreeData) {
-			ElementTreeData e = (ElementTreeData) element;
+		if (element instanceof ConfigurationTreeNode) {
+			ConfigurationTreeNode e = (ConfigurationTreeNode) element;
 			if (e.getData() instanceof String)
 				return Plugin.getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
 
