@@ -10,18 +10,18 @@ public class FolderContentProvider implements ITreeContentProvider {
 
 	protected static final Object[] EMPTY = new Object[0];
 
-	protected ElementTree fInput;
+	protected TreeModel fInput;
 
 
 	@Override
 	public Object[] getChildren(Object parentElement) {
 		
-		if (parentElement instanceof ElementTree)
-			return filter((ElementTree) parentElement).toArray(new ElementTreeData[0]);
+		if (parentElement instanceof TreeModel)
+			return filter((TreeModel) parentElement).toArray(new TreeNode[0]);
 		
-		if (parentElement instanceof ElementTreeData) {
-			ElementTreeData data = (ElementTreeData) parentElement;
-			return filter(data.getChildren()).toArray(new ElementTreeData[0]);
+		if (parentElement instanceof TreeNode) {
+			TreeNode data = (TreeNode) parentElement;
+			return filter(data.getChildren()).toArray(new TreeNode[0]);
 		}
 				
 		return EMPTY;
@@ -36,11 +36,11 @@ public class FolderContentProvider implements ITreeContentProvider {
 
 	@Override
 	public boolean hasChildren(Object element) {
-		if (element instanceof ElementTree)
-			return filter((ElementTree) element).size() > 0;
+		if (element instanceof TreeModel)
+			return filter((TreeModel) element).size() > 0;
 					
-		if (element instanceof ElementTreeData) {
-			return filter(((ElementTreeData) element).getChildren()).size() > 0;
+		if (element instanceof TreeNode) {
+			return filter(((TreeNode) element).getChildren()).size() > 0;
 		}
 		
 		return false;
@@ -49,9 +49,9 @@ public class FolderContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object getParent(Object element) {
-		if (element instanceof ElementTreeData) {
-			ElementTreeData data = (ElementTreeData) element;
-			ElementTreeData parent = data.getParent();
+		if (element instanceof TreeNode) {
+			TreeNode data = (TreeNode) element;
+			TreeNode parent = data.getParent();
 			return parent == null ? fInput : parent;
 		}
 
@@ -61,8 +61,8 @@ public class FolderContentProvider implements ITreeContentProvider {
 
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		if (newInput instanceof ElementTree) {
-			fInput = (ElementTree) newInput;
+		if (newInput instanceof TreeModel) {
+			fInput = (TreeModel) newInput;
 		}
 	}
 
@@ -72,9 +72,9 @@ public class FolderContentProvider implements ITreeContentProvider {
 	}
 	
 	
-	private Collection<ElementTreeData> filter(Collection<ElementTreeData> input) {
-		List<ElementTreeData> result = new ArrayList<ElementTreeData>();
-		for(ElementTreeData e : input) {
+	private Collection<TreeNode> filter(Collection<TreeNode> input) {
+		List<TreeNode> result = new ArrayList<TreeNode>();
+		for(TreeNode e : input) {
 			if (e.getData() instanceof String)
 				result.add(e);
 		}
@@ -82,9 +82,9 @@ public class FolderContentProvider implements ITreeContentProvider {
 	}
 	
 	
-	private Collection<ElementTreeData> filter(ElementTreeData[] input) {
-		List<ElementTreeData> result = new ArrayList<ElementTreeData>();
-		for(ElementTreeData e : input) {
+	private Collection<TreeNode> filter(TreeNode[] input) {
+		List<TreeNode> result = new ArrayList<TreeNode>();
+		for(TreeNode e : input) {
 			if (e.isEditable() && e.getData() instanceof String)
 				result.add(e);
 		}

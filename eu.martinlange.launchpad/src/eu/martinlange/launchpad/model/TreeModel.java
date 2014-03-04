@@ -12,19 +12,19 @@ import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.ui.IMemento;
 
-public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchConfigurationListener {
+public class TreeModel extends ArrayList<TreeNode> implements ILaunchConfigurationListener {
 
-	public static final ElementTree INSTANCE = new ElementTree();
+	public static final TreeModel INSTANCE = new TreeModel();
 
 	private static final long serialVersionUID = 3792280186446347626L;
 
 	private static final String UNCATEGORIZED = "Uncategorized";
 
-	private ElementTreeData fRootElement;
+	private TreeNode fRootElement;
 
 
-	private ElementTree() {
-		fRootElement = new ElementTreeData("Launch Pad");
+	private TreeModel() {
+		fRootElement = new TreeNode("Launch Pad");
 		add(fRootElement);
 	}
 
@@ -39,21 +39,22 @@ public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchCo
 		} catch (CoreException e) {
 		}
 
-		restoreState(getRoot(), memento, configurations);
+		if (memento != null)
+			restoreState(getRoot(), memento, configurations);
 
-		ElementTreeData uncategorized = new ElementTreeData(UNCATEGORIZED);
+		TreeNode uncategorized = new TreeNode(UNCATEGORIZED);
 		uncategorized.setEditable(false);
 		for (ILaunchConfiguration configuration : configurations) {
-			uncategorized.add(new ElementTreeData(configuration));
+			uncategorized.add(new TreeNode(configuration));
 		}
 
 		fRootElement.add(uncategorized);
 	}
 
 
-	private void restoreState(ElementTreeData parent, IMemento memento, List<ILaunchConfiguration> configurations) {
+	private void restoreState(TreeNode parent, IMemento memento, List<ILaunchConfiguration> configurations) {
 		for (IMemento folder : memento.getChildren("folder")) {
-			ElementTreeData element = new ElementTreeData(folder.getString("name"));
+			TreeNode element = new TreeNode(folder.getString("name"));
 			parent.add(element);
 			restoreState(element, folder, configurations);
 		}
@@ -63,7 +64,7 @@ public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchCo
 			if (configuration == null)
 				continue;
 
-			ElementTreeData element = new ElementTreeData(configuration);
+			TreeNode element = new TreeNode(configuration);
 			parent.add(element);
 		}
 	}
@@ -74,8 +75,8 @@ public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchCo
 	}
 
 
-	private void saveState(ElementTreeData parent, IMemento memento) {
-		for (ElementTreeData element : parent.getChildren()) {
+	private void saveState(TreeNode parent, IMemento memento) {
+		for (TreeNode element : parent.getChildren()) {
 			if (!element.isEditable())
 				continue;
 
@@ -93,17 +94,17 @@ public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchCo
 	}
 
 
-	public ElementTreeData getRoot() {
+	public TreeNode getRoot() {
 		return fRootElement;
 	}
 
 
-	public ElementTreeData getById(String id) {
-		Queue<ElementTreeData> remain = new LinkedList<ElementTreeData>();
+	public TreeNode getById(String id) {
+		Queue<TreeNode> remain = new LinkedList<TreeNode>();
 		remain.addAll(this);
 
 		while (!remain.isEmpty()) {
-			ElementTreeData e = remain.poll();
+			TreeNode e = remain.poll();
 			if (e.getId().equals(id))
 				return e;
 
@@ -127,9 +128,9 @@ public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchCo
 
 	@Override
 	public void launchConfigurationAdded(ILaunchConfiguration configuration) {
-		for (ElementTreeData element : this) {
+		for (TreeNode element : this) {
 			if (element.getData() instanceof String && (String) element.getData() == UNCATEGORIZED) {
-				element.add(new ElementTreeData(configuration));
+				element.add(new TreeNode(configuration));
 			}
 		}
 	}
@@ -137,13 +138,13 @@ public class ElementTree extends ArrayList<ElementTreeData> implements ILaunchCo
 
 	@Override
 	public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
-		Queue<ElementTreeData> remain = new LinkedList<ElementTreeData>();
+		Queue<TreeNode> remain = new LinkedList<TreeNode>();
 		remain.addAll(this);
 
-		ElementTreeData old = new ElementTreeData(configuration);
+		TreeNode old = new TreeNode(configuration);
 
 		while (!remain.isEmpty()) {
-			ElementTreeData e = remain.poll();
+			TreeNode e = remain.poll();
 			e.remove(old);
 			Collections.addAll(remain, e.getChildren());
 		}

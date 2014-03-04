@@ -10,7 +10,7 @@ import org.eclipse.ui.IEditorLauncher;
 import org.eclipse.ui.PlatformUI;
 import eu.martinlange.launchpad.Plugin;
 
-public class LaunchConfigurationEditor implements IEditorLauncher {
+public class ConfigurationEditor implements IEditorLauncher {
 
 	@Override
 	public void open(IPath path) {

@@ -11,10 +11,10 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import eu.martinlange.launchpad.Plugin;
-import eu.martinlange.launchpad.model.ElementTreeData;
+import eu.martinlange.launchpad.model.TreeNode;
 
 @SuppressWarnings("rawtypes")
-public class LaunchConfigurationAdapterFactory implements IAdapterFactory {
+public class ConfigurationAdapterFactory implements IAdapterFactory {
 
 	private static ILaunchManager fLaunchManager;
 
@@ -37,8 +37,8 @@ public class LaunchConfigurationAdapterFactory implements IAdapterFactory {
 		else if (adaptableObject instanceof ISelection)
 			return getAdapter((ISelection) adaptableObject);
 		
-		else if (adaptableObject instanceof ElementTreeData)
-			return getAdapter((ElementTreeData) adaptableObject);
+		else if (adaptableObject instanceof TreeNode)
+			return getAdapter((TreeNode) adaptableObject);
 
 		return null;
 	}
@@ -88,14 +88,14 @@ public class LaunchConfigurationAdapterFactory implements IAdapterFactory {
 			return obj;
 		else if (obj instanceof IFile)
 			return getAdapter((IFile) obj);
-		else if (obj instanceof ElementTreeData)
-			return getAdapter((ElementTreeData) obj);
+		else if (obj instanceof TreeNode)
+			return getAdapter((TreeNode) obj);
 
 		return null;
 	}
 	
 	
-	protected Object getAdapter(ElementTreeData selection) {
+	protected Object getAdapter(TreeNode selection) {
 		if (selection.getData() instanceof ILaunchConfiguration)
 			return selection.getData();
 
