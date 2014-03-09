@@ -55,7 +55,7 @@ public class MoveDialog extends TitleAreaDialog {
 
 
 	@Override
-	protected void okPressed() {
+	protected void okPressed() { 
 		ISelection selection = fViewer.getSelection();
 		if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
 			TreeNode element = (TreeNode) ((IStructuredSelection) selection).getFirstElement();

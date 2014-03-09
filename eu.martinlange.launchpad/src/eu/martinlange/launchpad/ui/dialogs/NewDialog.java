@@ -32,7 +32,7 @@ public class NewDialog extends TitleAreaDialog {
 
 	private StyledText fName;
 	private FilteredTree fTree;
-	private TreeViewer fViewer;
+	private TreeViewer fViewer; 
 	private Object fSelection;
 
 

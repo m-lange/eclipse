@@ -112,7 +112,7 @@ public class LaunchpadContentProvider implements ITreeContentProvider, ILaunchCo
 
 	@Override
 	public void launchConfigurationAdded(ILaunchConfiguration configuration) {
-		if (fViewer != null) {
+		if (fViewer != null) { 
 			fViewer.refresh();
 		}
 	}

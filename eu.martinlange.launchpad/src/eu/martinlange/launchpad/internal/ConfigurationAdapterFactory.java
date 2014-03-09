@@ -36,7 +36,7 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 
 		else if (adaptableObject instanceof ISelection)
 			return getAdapter((ISelection) adaptableObject);
-		
+
 		else if (adaptableObject instanceof TreeNode)
 			return getAdapter((TreeNode) adaptableObject);
 
@@ -93,8 +93,8 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 
 		return null;
 	}
-	
-	
+
+
 	protected Object getAdapter(TreeNode selection) {
 		if (selection.getData() instanceof ILaunchConfiguration)
 			return selection.getData();

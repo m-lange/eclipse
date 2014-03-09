@@ -20,7 +20,7 @@ public class RenameDialog extends Dialog {
 
 	private TreeNode fElement;
 
-	private StyledText fName;
+	private StyledText fName; 
 
 
 	public RenameDialog(Shell shell, TreeNode element) {

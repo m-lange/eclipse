@@ -361,7 +361,7 @@ public class LaunchpadPart extends CommonNavigator {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				if (getCommonViewer().getControl().isDisposed()) {
 				return Status.CANCEL_STATUS;
-				}
+				} 
 
 				String text = getFilterString();
 				if (text == null) return Status.OK_STATUS;

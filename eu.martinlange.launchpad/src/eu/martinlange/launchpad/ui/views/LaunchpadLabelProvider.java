@@ -21,7 +21,7 @@ public class LaunchpadLabelProvider extends LabelProvider implements ILabelProvi
 	@Override
 	public String getText(Object element) {
 		if (element instanceof TreeNode) {
-			TreeNode e = (TreeNode) element;
+			TreeNode e = (TreeNode) element; 
 			if (e.getData() instanceof String)
 				return (String) e.getData();
 

@@ -61,7 +61,7 @@
             name="Launch Pad"
             restorable="true">
       </view>
-   </extension>
+   </extension> 
    <extension
          point="org.eclipse.ui.commands">
       <command
