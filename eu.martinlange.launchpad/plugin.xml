@@ -77,6 +77,21 @@
             name="profile">
       </command>
       <command
+            defaultHandler="eu.martinlange.launchpad.commands.NewHandler"
+            id="eu.martinlange.launchpad.command.new"
+            name="new">
+      </command>
+      <command
+            defaultHandler="eu.martinlange.launchpad.commands.MoveHandler"
+            id="eu.martinlange.launchpad.command.move"
+            name="move">
+      </command>
+      <command
+            defaultHandler="eu.martinlange.launchpad.commands.RenameHandler"
+            id="eu.martinlange.launchpad.command.rename"
+            name="rename">
+      </command>
+      <command
             defaultHandler="eu.martinlange.launchpad.commands.EditHandler"
             id="eu.martinlange.launchpad.command.edit"
             name="edit">
@@ -277,6 +292,13 @@
       <menuContribution
             allPopups="false"
             locationURI="popup:eu.martinlange.launchpad.ui.LaunchPad">
+         <command
+               commandId="eu.martinlange.launchpad.command.new"
+               disabledIcon="icons/full/dlcl16/newfolder.gif"
+               icon="icons/full/elcl16/newfolder.gif"
+               label="New Category..."
+               style="push">
+         </command>
          <separator
                name="separator1"
                visible="true">
@@ -306,6 +328,16 @@
                name="separator2"
                visible="true">
          </separator>
+         <command
+               commandId="eu.martinlange.launchpad.command.move"
+               label="Reassign to..."
+               style="push">
+         </command>
+         <command
+               commandId="eu.martinlange.launchpad.command.rename"
+               label="Rename..."
+               style="push">
+         </command>
          <command
                commandId="eu.martinlange.launchpad.command.edit"
                label="Edit..."

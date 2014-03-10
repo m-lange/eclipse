@@ -180,8 +180,6 @@ public class LaunchpadPart extends CommonNavigator {
 
 	@Override
 	public void saveState(IMemento memento) {
-		super.saveState(memento);
-
 		if (this.fMemento == null || memento == null)
 			return;
 
@@ -190,6 +188,8 @@ public class LaunchpadPart extends CommonNavigator {
 			memento.putMemento(fMemento);
 			return;
 		}
+		
+		super.saveState(memento);
 
 		TreeModel.INSTANCE.saveState(memento);
 	}

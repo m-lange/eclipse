@@ -27,15 +27,15 @@ import eu.martinlange.launchpad.ui.views.LaunchpadLabelProvider;
 
 public class MoveDialog extends TitleAreaDialog {
 
-	private TreeNode fElement;
+	private TreeNode fNode;
 
 	private FilteredTree fTree;
 	private TreeViewer fViewer;
 
 
-	public MoveDialog(Shell shell, TreeNode element) {
+	public MoveDialog(Shell shell, TreeNode node) {
 		super(shell);
-		fElement = element;
+		fNode = node;
 	}
 
 
@@ -50,7 +50,7 @@ public class MoveDialog extends TitleAreaDialog {
 		getButton(IDialogConstants.OK_ID).setEnabled(isValid());
 		fTree.setFocus();
 
-		fViewer.setSelection(new StructuredSelection(fElement.getParent()), true);
+		fViewer.setSelection(new StructuredSelection(fNode.getParent()), true);
 	}
 
 
@@ -58,9 +58,9 @@ public class MoveDialog extends TitleAreaDialog {
 	protected void okPressed() { 
 		ISelection selection = fViewer.getSelection();
 		if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
-			TreeNode element = (TreeNode) ((IStructuredSelection) selection).getFirstElement();
-			fElement.getParent().remove(fElement);
-			element.add(fElement);
+			TreeNode node = (TreeNode) ((IStructuredSelection) selection).getFirstElement();
+			fNode.getParent().remove(fNode);
+			node.add(fNode);
 		}
 
 		super.okPressed();
@@ -89,7 +89,7 @@ public class MoveDialog extends TitleAreaDialog {
 		initializeDialogUnits(composite);
 
 		Label lbl = new Label(composite, SWT.NONE);
-		lbl.setText(String.format("Choose destination for '%s':", fElement.toString()));
+		lbl.setText(String.format("Choose destination for '%s':", fNode.toString()));
 		GridData gd = new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1);
 		gd.verticalIndent = 5;
 		lbl.setLayoutData(gd);
@@ -131,7 +131,7 @@ public class MoveDialog extends TitleAreaDialog {
 		TreeNode parent = (TreeNode) selection.getFirstElement();
 		
 		while (parent != null) {
-			if (parent == fElement)
+			if (parent == fNode)
 				return false;
 			parent = parent.getParent();
 		}

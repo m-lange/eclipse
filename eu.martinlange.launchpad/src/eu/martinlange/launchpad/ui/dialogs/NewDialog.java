@@ -55,11 +55,11 @@ public class NewDialog extends TitleAreaDialog {
 
 		if (fSelection instanceof TreeNode)
 		{
-			TreeNode element = (TreeNode) fSelection;
-			if (element.getData() instanceof String)
-				fViewer.setSelection(new StructuredSelection(element), true);
+			TreeNode node = (TreeNode) fSelection;
+			if (node.getData() instanceof String)
+				fViewer.setSelection(new StructuredSelection(node), true);
 			else
-				fViewer.setSelection(new StructuredSelection(element.getParent()), true);
+				fViewer.setSelection(new StructuredSelection(node.getParent()), true);
 
 			if (fViewer.getSelection().isEmpty())
 				fViewer.setSelection(new StructuredSelection(TreeModel.INSTANCE.getRoot()), true);

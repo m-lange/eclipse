@@ -18,14 +18,14 @@ import eu.martinlange.launchpad.model.TreeNode;
 
 public class RenameDialog extends Dialog {
 
-	private TreeNode fElement;
+	private TreeNode fNode;
 
 	private StyledText fName; 
 
 
-	public RenameDialog(Shell shell, TreeNode element) {
+	public RenameDialog(Shell shell, TreeNode node) {
 		super(shell);
-		fElement = element;
+		fNode = node;
 	}
 
 
@@ -41,7 +41,7 @@ public class RenameDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
-		fElement.setData(fName.getText());
+		fNode.setData(fName.getText());
 		super.okPressed();
 	}
 
@@ -74,7 +74,7 @@ public class RenameDialog extends Dialog {
 		lbl.setLayoutData(gd);
 
 		fName = new StyledText(composite, SWT.BORDER | SWT.SINGLE);
-		fName.setText(fElement.toString());
+		fName.setText(fNode.toString());
 		fName.setRightMargin(5);
 		fName.setLeftMargin(5);
 		gd = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
