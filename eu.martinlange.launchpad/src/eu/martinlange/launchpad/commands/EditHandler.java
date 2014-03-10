@@ -13,6 +13,7 @@ import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.ILaunchGroup;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.IElementUpdater;
@@ -72,8 +73,9 @@ public class EditHandler extends AbstractHandler implements IHandler, IElementUp
 		ILaunchConfiguration configuration = (ILaunchConfiguration) Platform.getAdapterManager().getAdapter(selection, ILaunchConfiguration.class);
 		if (configuration != null) {
 			element.setText(String.format("Edit %s...", fDelegate.getText(configuration)));
-			
-			ImageDescriptor desc = ImageDescriptor.createFromImage(fDelegate.getImage(configuration)); 
+
+			final Image img = fDelegate.getImage(configuration);
+			final ImageDescriptor desc = ImageDescriptor.createFromImage(img);
 			element.setIcon(desc);
 			element.setDisabledIcon(desc);
 			element.setHoverIcon(desc);

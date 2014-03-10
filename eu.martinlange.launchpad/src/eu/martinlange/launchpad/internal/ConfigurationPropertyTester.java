@@ -26,7 +26,6 @@ public class ConfigurationPropertyTester extends PropertyTester {
 			if (configuration.supportsMode((String) expectedValue))
 				return true;
 		} catch (CoreException e) {
-			e.printStackTrace();
 		}
 		
 		return false;

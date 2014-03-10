@@ -116,6 +116,17 @@
                icon="icons/full/etool16/run.gif"
                label="Run"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <test
+                        forcePluginActivation="true"
+                        property="eu.martinlange.launchpad.supportsMode"
+                        value="run">
+                  </test>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="eu.martinlange.launchpad.command.debug"
@@ -123,6 +134,17 @@
                icon="icons/full/etool16/debug.gif"
                label="Debug"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <test
+                        forcePluginActivation="true"
+                        property="eu.martinlange.launchpad.supportsMode"
+                        value="debug">
+                  </test>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="eu.martinlange.launchpad.command.profile"
@@ -130,6 +152,17 @@
                icon="icons/full/etool16/profile.gif"
                label="Profile"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <test
+                        forcePluginActivation="true"
+                        property="eu.martinlange.launchpad.supportsMode"
+                        value="profile">
+                  </test>
+               </with>
+            </visibleWhen>
          </command>
          <separator
                name="separator1"
@@ -145,6 +178,17 @@
                icon="icons/full/etool16/run.gif"
                label="Run"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <test
+                        forcePluginActivation="true"
+                        property="eu.martinlange.launchpad.supportsMode"
+                        value="run">
+                  </test>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="eu.martinlange.launchpad.command.debug"
@@ -152,6 +196,17 @@
                icon="icons/full/etool16/debug.gif"
                label="Debug"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <test
+                        forcePluginActivation="true"
+                        property="eu.martinlange.launchpad.supportsMode"
+                        value="debug">
+                  </test>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="eu.martinlange.launchpad.command.profile"
@@ -159,6 +214,17 @@
                icon="icons/full/etool16/profile.gif"
                label="Profile"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <test
+                        forcePluginActivation="true"
+                        property="eu.martinlange.launchpad.supportsMode"
+                        value="profile">
+                  </test>
+               </with>
+            </visibleWhen>
          </command>
          <separator
                name="separator1"
