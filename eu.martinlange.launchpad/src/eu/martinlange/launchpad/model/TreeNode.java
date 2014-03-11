@@ -1,5 +1,7 @@
 package eu.martinlange.launchpad.model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -7,6 +9,8 @@ import java.util.UUID;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
 public class TreeNode implements Iterable<TreeNode> {
+
+	private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 
 	private TreeNode parent;
 	private List<TreeNode> children;
@@ -35,28 +39,47 @@ public class TreeNode implements Iterable<TreeNode> {
 	}
 
 
-	public boolean add(TreeNode element) {
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		changeSupport.addPropertyChangeListener(listener);
+	}
+
+
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		changeSupport.removePropertyChangeListener(listener);
+	}
+
+
+	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+		changeSupport.addPropertyChangeListener(propertyName, listener);
+	}
+
+
+	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+		changeSupport.removePropertyChangeListener(propertyName, listener);
+	}
+
+
+	public void add(TreeNode element) {
 		if (element == null)
 			throw new IllegalArgumentException("element");
 
 		if (!children.contains(element)) {
 			element.setParent(this);
-			return children.add(element);
+			children.add(element);
+			firePropertyChange("children", element, children);
 		}
-		return false;
 	}
 
 
-	public boolean add(int index, TreeNode element) {
+	public void add(int index, TreeNode element) {
 		if (element == null)
 			throw new IllegalArgumentException("element");
 
 		if (!children.contains(element)) {
 			element.setParent(this);
 			children.add(index, element);
-			return true;
+			firePropertyChange("children", element, children);
 		}
-		return false;
 	}
 
 
@@ -65,11 +88,12 @@ public class TreeNode implements Iterable<TreeNode> {
 	}
 
 
-	public boolean remove(TreeNode element) {
+	public void remove(TreeNode element) {
 		if (element == null)
 			throw new IllegalArgumentException("element");
 
-		return children.remove(element);
+		children.remove(element);
+		firePropertyChange("children", null, children);
 	}
 
 
@@ -92,7 +116,7 @@ public class TreeNode implements Iterable<TreeNode> {
 		if (parent == null)
 			throw new IllegalArgumentException("parent");
 
-		this.parent = parent;
+		firePropertyChange("parent", this.parent, this.parent = parent);
 	}
 
 
@@ -107,17 +131,22 @@ public class TreeNode implements Iterable<TreeNode> {
 
 
 	public void setData(Object data) {
-		this.data = data;
+		firePropertyChange("data", this.data, this.data = data);
 	}
-	
-	
+
+
 	public boolean isEditable() {
 		return editable;
 	}
-	
-	
+
+
 	protected void setEditable(boolean editable) {
-		this.editable = editable;
+		firePropertyChange("editable", this.editable, this.editable = editable);
+	}
+
+
+	protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+		changeSupport.firePropertyChange(propertyName, oldValue, newValue);
 	}
 
 

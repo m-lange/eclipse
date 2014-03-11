@@ -17,7 +17,7 @@ public class FolderContentProvider implements ITreeContentProvider {
 	public Object[] getChildren(Object parentElement) {
 		
 		if (parentElement instanceof TreeModel)
-			return filter((TreeModel) parentElement).toArray(new TreeNode[0]);
+			return new TreeNode[] { ((TreeModel) parentElement).getRoot() };
 		
 		if (parentElement instanceof TreeNode) {
 			TreeNode data = (TreeNode) parentElement;
@@ -37,7 +37,7 @@ public class FolderContentProvider implements ITreeContentProvider {
 	@Override
 	public boolean hasChildren(Object element) {
 		if (element instanceof TreeModel)
-			return filter((TreeModel) element).size() > 0;
+			return true;
 					
 		if (element instanceof TreeNode) {
 			return filter(((TreeNode) element).getChildren()).size() > 0;
@@ -69,16 +69,6 @@ public class FolderContentProvider implements ITreeContentProvider {
 
 	@Override
 	public void dispose() {
-	}
-	
-	
-	private Collection<TreeNode> filter(Collection<TreeNode> input) {
-		List<TreeNode> result = new ArrayList<TreeNode>();
-		for(TreeNode e : input) {
-			if (e.getData() instanceof String)
-				result.add(e);
-		}
-		return result;
 	}
 	
 	

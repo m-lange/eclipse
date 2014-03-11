@@ -4,7 +4,6 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -26,9 +25,7 @@ public class NewHandler extends AbstractHandler implements IHandler {
 			TreeNode node = (TreeNode) data;
 
 			NewDialog dialog = new NewDialog(HandlerUtil.getActiveShell(event), node);
-			if (dialog.open() == Dialog.OK) {
-//				fPart.refresh();
-			}
+			dialog.open();
 		}
 		
 		return null;

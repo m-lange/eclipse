@@ -12,11 +12,9 @@ import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.ui.IMemento;
 
-public class TreeModel extends ArrayList<TreeNode> implements ILaunchConfigurationListener {
+public class TreeModel implements ILaunchConfigurationListener {
 
 	public static final TreeModel INSTANCE = new TreeModel();
-
-	private static final long serialVersionUID = 3792280186446347626L;
 
 	private static final String UNCATEGORIZED = "Uncategorized";
 
@@ -25,7 +23,6 @@ public class TreeModel extends ArrayList<TreeNode> implements ILaunchConfigurati
 
 	private TreeModel() {
 		fRootElement = new TreeNode("Launch Pad");
-		add(fRootElement);
 	}
 
 
@@ -101,7 +98,7 @@ public class TreeModel extends ArrayList<TreeNode> implements ILaunchConfigurati
 
 	public TreeNode getById(String id) {
 		Queue<TreeNode> remain = new LinkedList<TreeNode>();
-		remain.addAll(this);
+		remain.add(getRoot());
 
 		while (!remain.isEmpty()) {
 			TreeNode e = remain.poll();
@@ -128,7 +125,7 @@ public class TreeModel extends ArrayList<TreeNode> implements ILaunchConfigurati
 
 	@Override
 	public void launchConfigurationAdded(ILaunchConfiguration configuration) {
-		for (TreeNode element : this) {
+		for (TreeNode element : getRoot().getChildren()) {
 			if (element.getData() instanceof String && (String) element.getData() == UNCATEGORIZED) {
 				element.add(new TreeNode(configuration));
 			}
@@ -139,7 +136,7 @@ public class TreeModel extends ArrayList<TreeNode> implements ILaunchConfigurati
 	@Override
 	public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
 		Queue<TreeNode> remain = new LinkedList<TreeNode>();
-		remain.addAll(this);
+		remain.add(getRoot());
 
 		TreeNode old = new TreeNode(configuration);
 
