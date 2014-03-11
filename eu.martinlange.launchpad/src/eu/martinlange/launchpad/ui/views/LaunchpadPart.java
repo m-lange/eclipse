@@ -3,9 +3,7 @@ package eu.martinlange.launchpad.ui.views;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import org.eclipse.core.commands.Command;
-import org.eclipse.core.commands.IStateListener;
-import org.eclipse.core.commands.State;
+import java.util.Map;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ISafeRunnable;
@@ -44,21 +42,21 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.ISourceProviderListener;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
-import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.dialogs.PatternFilter;
-import org.eclipse.ui.handlers.RadioState;
-import org.eclipse.ui.handlers.RegistryToggleState;
 import org.eclipse.ui.navigator.CommonNavigator;
 import org.eclipse.ui.progress.WorkbenchJob;
+import org.eclipse.ui.services.ISourceProviderService;
 import eu.martinlange.launchpad.Plugin;
 import eu.martinlange.launchpad.internal.ISharedImages;
+import eu.martinlange.launchpad.internal.LaunchpadState;
 import eu.martinlange.launchpad.model.TreeModel;
 
-public class LaunchpadPart extends CommonNavigator {
+public class LaunchpadPart extends CommonNavigator implements ISourceProviderListener {
 
 	private static final long SOFT_MAX_EXPAND_TIME = 200;
 
@@ -67,8 +65,7 @@ public class LaunchpadPart extends CommonNavigator {
 	private IDialogSettings fDialogSettings;
 	protected IMemento fMemento;
 
-	protected boolean fCategorized;
-	protected String fLaunchMode;
+	protected LaunchpadState fState;
 
 	private Label fClearButton;
 	private StyledText fFilterText;
@@ -107,40 +104,12 @@ public class LaunchpadPart extends CommonNavigator {
 		fMemento = memento;
 
 		initConfigurationTree(memento);
-
-		ISafeRunnable code = new ISafeRunnable() {
-			@Override
-			public void run() throws Exception {
-				ICommandService commandService = (ICommandService) getSite().getService(ICommandService.class);
-
-				Command command = commandService.getCommand("eu.martinlange.launchpad.command.launchMode");
-				State state = command.getState(RadioState.STATE_ID);
-				state.addListener(new IStateListener() {
-					@Override
-					public void handleStateChange(State state, Object oldValue) {
-						launchModeChanged((String) state.getValue());
-					}
-				});
-				fLaunchMode = (String) state.getValue();
-
-				command = commandService.getCommand("eu.martinlange.launchpad.command.rootMode");
-				state = command.getState(RegistryToggleState.STATE_ID);
-				state.addListener(new IStateListener() {
-					@Override
-					public void handleStateChange(State state, Object oldValue) {
-						rootModeChanged(((Boolean) state.getValue()).booleanValue());
-					}
-				});
-				fCategorized = ((Boolean) state.getValue()).booleanValue();
-			}
-
-
-			@Override
-			public void handleException(Throwable exception) {
-				Plugin.log(exception);
-			}
-		};
-		SafeRunner.run(code);
+		
+		ISourceProviderService sourceProviderService = (ISourceProviderService) getSite().getService(ISourceProviderService.class);
+	    fState = (LaunchpadState) sourceProviderService.getSourceProvider(LaunchpadState.IS_CATEGORIZED);
+	    fState.addSourceProviderListener(this);
+	    
+	    fState.setCategorized(fState.isCategorized());
 	}
 
 
@@ -458,7 +427,7 @@ public class LaunchpadPart extends CommonNavigator {
 
 	@Override
 	protected Object getInitialInput() {
-		if (fCategorized)
+		if (fState.isCategorized())
 			return TreeModel.INSTANCE.getRoot();
 		else
 			return DebugPlugin.getDefault().getLaunchManager();
@@ -490,7 +459,7 @@ public class LaunchpadPart extends CommonNavigator {
 
 		if (configuration != null) {
 			try {
-				String mode = fLaunchMode;
+				String mode = fState.getLaunchMode();
 				if (configuration.supportsMode(mode)) {
 					DebugUITools.buildAndLaunch(configuration, mode, new NullProgressMonitor());
 					return;
@@ -511,14 +480,19 @@ public class LaunchpadPart extends CommonNavigator {
 	}
 
 
-	public void rootModeChanged(boolean newMode) {
-		fCategorized = newMode;
-		getCommonViewer().setInput(getInitialInput());
+	@Override
+	public void sourceChanged(int sourcePriority, @SuppressWarnings("rawtypes") Map sourceValuesByName) {
+		
 	}
 
 
-	public void launchModeChanged(String newMode) {
-		fLaunchMode = newMode;
+	@Override
+	public void sourceChanged(int sourcePriority, String sourceName, Object sourceValue) {
+		if (getCommonViewer() == null)
+			return;
+		
+		if (LaunchpadState.IS_CATEGORIZED.equals(sourceName))
+			getCommonViewer().setInput(getInitialInput());	
 	}
 
 }

@@ -5,7 +5,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
-public class ConfigurationPropertyTester extends PropertyTester {
+public class LaunchpadPropertyTester extends PropertyTester {
 
 	public static final String NAMESPACE = "eu.martinlange.launchpad";
 	public static final String PROPERTY = "supportsMode";

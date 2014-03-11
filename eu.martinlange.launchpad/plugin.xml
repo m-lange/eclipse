@@ -298,6 +298,15 @@
                icon="icons/full/elcl16/newfolder.gif"
                label="New Category..."
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="eu.martinlange.launchpad.isCategorized">
+                  <equals
+                        value="true">
+                  </equals>
+               </with>
+            </visibleWhen>
          </command>
          <separator
                name="separator1"
@@ -332,11 +341,29 @@
                commandId="eu.martinlange.launchpad.command.move"
                label="Reassign to..."
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="eu.martinlange.launchpad.isCategorized">
+                  <equals
+                        value="true">
+                  </equals>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="eu.martinlange.launchpad.command.rename"
                label="Rename..."
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="eu.martinlange.launchpad.isCategorized">
+                  <equals
+                        value="true">
+                  </equals>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="eu.martinlange.launchpad.command.edit"
@@ -464,12 +491,26 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="eu.martinlange.launchpad.internal.ConfigurationPropertyTester"
+            class="eu.martinlange.launchpad.internal.LaunchpadPropertyTester"
             id="eu.martinlange.launchpad.supportsMode"
             namespace="eu.martinlange.launchpad"
             properties="supportsMode"
             type="java.lang.Object">
       </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.ui.services">
+      <sourceProvider
+            provider="eu.martinlange.launchpad.internal.LaunchpadState">
+         <variable
+               name="eu.martinlange.launchpad.isCategorized"
+               priorityLevel="workbench">
+         </variable>
+         <variable
+               name="eu.martinlange.launchpad.launchMode"
+               priorityLevel="workbench">
+         </variable>
+      </sourceProvider>
    </extension>
 
 </plugin>
