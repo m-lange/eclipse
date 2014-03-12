@@ -399,14 +399,12 @@
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <not>
                   <with
                         variable="selection">
                      <test
-                           property="eu.martinlange.launchpad.isFolder">
+                           property="eu.martinlange.launchpad.isLaunchConfigguration">
                      </test>
                   </with>
-               </not>
             </visibleWhen>
          </command>
       </menuContribution>
@@ -533,7 +531,7 @@
             class="eu.martinlange.launchpad.internal.LaunchpadPropertyTester"
             id="eu.martinlange.launchpad.propertyTester"
             namespace="eu.martinlange.launchpad"
-            properties="supportsMode,isFolder,isEditable"
+            properties="supportsMode,isFolder,isLaunchConfigguration,isEditable"
             type="java.lang.Object">
       </propertyTester>
    </extension>
