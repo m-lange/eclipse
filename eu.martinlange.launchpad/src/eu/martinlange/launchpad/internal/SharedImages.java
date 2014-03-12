@@ -6,8 +6,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import eu.martinlange.launchpad.Plugin;
 
@@ -73,16 +71,6 @@ public class SharedImages implements ISharedImages {
 		declareImage(SharedImages.IMG_ELCL_COLLAPSEALL_DISABLED, PATH_DLCL + "collapseall.gif");
 		
 		declareImage(SharedImages.IMG_WIZBAN_NEWFOLDER, PATH_WIZBAN + "newfolder_wiz.png");
-		
-		
-		ImageDescriptor descriptor = AbstractUIPlugin.imageDescriptorFromPlugin(PlatformUI.PLUGIN_ID, "$nl$/icons/full/etool16/clear_co.png");
-		if (descriptor != null) {
-			imageRegistry.put(CLEAR_ICON, descriptor);
-		}
-		descriptor = AbstractUIPlugin.imageDescriptorFromPlugin(PlatformUI.PLUGIN_ID, "$nl$/icons/full/dtool16/clear_co.png");
-		if (descriptor != null) {
-			imageRegistry.put(DISABLED_CLEAR_ICON, descriptor);
-		}
 	}
 
 
