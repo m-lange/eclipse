@@ -14,7 +14,7 @@ import eu.martinlange.launchpad.Plugin;
 import eu.martinlange.launchpad.model.TreeNode;
 
 @SuppressWarnings("rawtypes")
-public class ConfigurationAdapterFactory implements IAdapterFactory {
+public class LaunchpadAdapterFactory implements IAdapterFactory {
 
 	private static ILaunchManager fLaunchManager;
 
@@ -25,20 +25,28 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 
 	@Override
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
-		if (adapterType != ILaunchConfiguration.class)
+		if (adapterType == ILaunchConfiguration.class) {
+			if (adaptableObject instanceof IPath)
+				return getAdapter((IPath) adaptableObject);
+
+			else if (adaptableObject instanceof IFile)
+				return getAdapter((IFile) adaptableObject);
+
+			else if (adaptableObject instanceof ISelection)
+				return getAdapter((ISelection) adaptableObject);
+
+			else if (adaptableObject instanceof TreeNode)
+				return getAdapter((TreeNode) adaptableObject);
+
 			return null;
+		}
 
-		if (adaptableObject instanceof IPath)
-			return getAdapter((IPath) adaptableObject);
+		if (adapterType == TreeNode.class) {
+			if (adaptableObject instanceof IStructuredSelection && ((IStructuredSelection) adaptableObject).getFirstElement() instanceof TreeNode)
+				return (TreeNode) ((IStructuredSelection) adaptableObject).getFirstElement();
 
-		else if (adaptableObject instanceof IFile)
-			return getAdapter((IFile) adaptableObject);
-
-		else if (adaptableObject instanceof ISelection)
-			return getAdapter((ISelection) adaptableObject);
-
-		else if (adaptableObject instanceof TreeNode)
-			return getAdapter((TreeNode) adaptableObject);
+			return null;
+		}
 
 		return null;
 	}
@@ -46,7 +54,8 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 
 	@Override
 	public Class[] getAdapterList() {
-		return new Class[] { ILaunchConfiguration.class };
+		return new Class[] { ILaunchConfiguration.class,
+				             TreeNode.class };
 	}
 
 

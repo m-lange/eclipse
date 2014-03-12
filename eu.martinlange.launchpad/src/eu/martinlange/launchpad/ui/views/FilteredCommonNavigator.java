@@ -87,7 +87,7 @@ public abstract class FilteredCommonNavigator extends CommonNavigator {
 	}
 
 
-	public abstract PatternFilter getPatternFilter();
+	protected abstract PatternFilter getPatternFilter();
 
 
 	@Override

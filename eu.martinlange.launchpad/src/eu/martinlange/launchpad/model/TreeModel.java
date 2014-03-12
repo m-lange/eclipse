@@ -20,13 +20,16 @@ public class TreeModel implements ILaunchConfigurationListener {
 
 	private TreeNode fRootElement;
 
-
-	private TreeModel() {
-		fRootElement = new TreeNode("Launch Pad");
+	
+	public boolean isInitialized() {
+		return fRootElement != null;
 	}
-
+	
 
 	public void restoreState(IMemento memento) {
+		if (isInitialized())
+			return;
+		
 		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 		manager.addLaunchConfigurationListener(this);
 
@@ -92,6 +95,8 @@ public class TreeModel implements ILaunchConfigurationListener {
 
 
 	public TreeNode getRoot() {
+		if (fRootElement == null)
+			fRootElement = new TreeNode("Launch Pad");
 		return fRootElement;
 	}
 

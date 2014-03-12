@@ -1,7 +1,5 @@
 package eu.martinlange.launchpad.ui.views;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
@@ -12,13 +10,12 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import eu.martinlange.launchpad.model.TreeNode;
 
-public class LaunchpadContentProvider implements ITreeContentProvider, ILaunchConfigurationListener, PropertyChangeListener {
+public class LaunchpadContentProvider implements ITreeContentProvider, ILaunchConfigurationListener {
 
 	protected static final Object[] EMPTY = new Object[0];
 
 	protected StructuredViewer fViewer;
 	protected ILaunchManager fLaunchManager;
-	protected TreeNode fRootNode;
 
 
 	@Override
@@ -97,20 +94,13 @@ public class LaunchpadContentProvider implements ITreeContentProvider, ILaunchCo
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		if (fLaunchManager != null)
 			fLaunchManager.removeLaunchConfigurationListener(this);
-		if (fRootNode != null)
-			fRootNode.removePropertyChangeListener(this);
 
 		fViewer = (StructuredViewer) viewer;
 		fLaunchManager = null;
-		fRootNode = null;
 
 		if (newInput instanceof ILaunchManager) {
 			fLaunchManager = (ILaunchManager) newInput;
 			fLaunchManager.addLaunchConfigurationListener(this);
-		}
-		if (newInput instanceof TreeNode) {
-			fRootNode = (TreeNode) newInput;
-			fRootNode.addPropertyChangeListener(this);
 		}
 	}
 
@@ -119,11 +109,8 @@ public class LaunchpadContentProvider implements ITreeContentProvider, ILaunchCo
 	public void dispose() {
 		if (fLaunchManager != null)
 			fLaunchManager.removeLaunchConfigurationListener(this);
-		if (fRootNode != null)
-			fRootNode.removePropertyChangeListener(this);
 		
 		fLaunchManager = null;
-		fRootNode = null;
 	}
 
 
@@ -145,14 +132,6 @@ public class LaunchpadContentProvider implements ITreeContentProvider, ILaunchCo
 
 	@Override
 	public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
-		if (fViewer != null) {
-			fViewer.refresh(true);
-		}
-	}
-
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
 		if (fViewer != null) {
 			fViewer.refresh(true);
 		}

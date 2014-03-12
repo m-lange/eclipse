@@ -10,7 +10,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-import eu.martinlange.launchpad.internal.ConfigurationAdapterFactory;
+import eu.martinlange.launchpad.internal.LaunchpadAdapterFactory;
 import eu.martinlange.launchpad.internal.ISharedImages;
 import eu.martinlange.launchpad.internal.SharedImages;
 import eu.martinlange.launchpad.model.TreeNode;
@@ -31,7 +31,7 @@ public class Plugin extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		
-		IAdapterFactory factory = new ConfigurationAdapterFactory();
+		IAdapterFactory factory = new LaunchpadAdapterFactory();
 		Platform.getAdapterManager().registerAdapters(factory, ISelection.class);
 		Platform.getAdapterManager().registerAdapters(factory, IPath.class);
 		Platform.getAdapterManager().registerAdapters(factory, IFile.class);

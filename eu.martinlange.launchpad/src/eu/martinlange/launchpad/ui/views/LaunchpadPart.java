@@ -30,6 +30,8 @@ import eu.martinlange.launchpad.model.TreeModel;
 
 public class LaunchpadPart extends FilteredCommonNavigator implements ISourceProviderListener {
 
+	public static final String VIEW_ID = "eu.martinlange.launchpad.ui.LaunchPad";
+	
 	private static final String TAG_MEMENTO = "memento";
 
 	private IDialogSettings fDialogSettings;
@@ -67,7 +69,7 @@ public class LaunchpadPart extends FilteredCommonNavigator implements ISourcePro
 		ISourceProviderService sourceProviderService = (ISourceProviderService) getSite().getService(ISourceProviderService.class);
 		fState = (LaunchpadState) sourceProviderService.getSourceProvider(LaunchpadState.IS_CATEGORIZED);
 		fState.addSourceProviderListener(this);
-
+		
 		fState.setCategorized(fState.isCategorized());
 	}
 
@@ -133,7 +135,7 @@ public class LaunchpadPart extends FilteredCommonNavigator implements ISourcePro
 	
 	
 	@Override
-	public PatternFilter getPatternFilter() {
+	protected PatternFilter getPatternFilter() {
 		return new PatternFilter();
 	}
 
@@ -141,6 +143,14 @@ public class LaunchpadPart extends FilteredCommonNavigator implements ISourcePro
 	@Override
 	public void setFocus() {
 		getCommonViewer().getTree().setFocus();
+	}
+	
+	
+	public void refresh() {
+		if (getCommonViewer() == null || getCommonViewer().getTree().isDisposed())
+			return;
+
+		getCommonViewer().refresh(true);
 	}
 
 
