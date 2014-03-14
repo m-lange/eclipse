@@ -450,6 +450,12 @@
             <or>
                <instanceof
                      value="org.eclipse.debug.core.ILaunchManager">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.debug.core.ILaunchConfigurationType">
+               </instanceof>
+               <instanceof
+                     value="eu.martinlange.launchpad.model.TreeNode">
                </instanceof></or>
          </triggerPoints>
          <possibleChildren>
@@ -459,7 +465,21 @@
                </instanceof>
                <instanceof
                      value="org.eclipse.debug.core.ILaunchConfigurationType">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.debug.core.ILaunchConfiguration">
+               </instanceof>
+               <instanceof
+                     value="eu.martinlange.launchpad.model.TreeNode">
                </instanceof></or></possibleChildren>
+         <dropAssistant
+               class="eu.martinlange.launchpad.ui.views.LaunchpadDropAdapter"
+               id="eu.martinlange.launchpad.dropAssistant">
+            <possibleDropTargets>
+               <instanceof
+                     value="eu.martinlange.launchpad.model.TreeNode">
+               </instanceof></possibleDropTargets>
+         </dropAssistant>
       </navigatorContent>
    </extension>
    <extension
