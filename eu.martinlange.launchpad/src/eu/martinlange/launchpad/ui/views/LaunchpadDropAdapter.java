@@ -10,15 +10,22 @@ import eu.martinlange.launchpad.Plugin;
 
 public class LaunchpadDropAdapter extends CommonDropAdapterAssistant {
 
-
 	@Override
 	public IStatus validateDrop(Object target, int operation, TransferData transferType) {
-		return new Status(IStatus.OK, Plugin.PLUGIN_ID, "");
+		return new Status(IStatus.ERROR, Plugin.PLUGIN_ID, "");
 	}
 
 
 	@Override
 	public IStatus handleDrop(CommonDropAdapter aDropAdapter, DropTargetEvent aDropTargetEvent, Object aTarget) {
+//		TransferData transferData = aDropAdapter.getCurrentTransfer();
+//		
+//		if (LocalSelectionTransfer.getTransfer().isSupportedType(transferData)) {
+//			Object selection = LocalSelectionTransfer.getTransfer().nativeToJava(transferData);
+//			
+//			
+//		}
+		
 		return null;
 	}
 
