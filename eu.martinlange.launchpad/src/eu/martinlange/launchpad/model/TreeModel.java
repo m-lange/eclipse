@@ -48,7 +48,7 @@ public class TreeModel implements ILaunchConfigurationListener {
 			uncategorized.add(new TreeNode(configuration));
 		}
 
-		fRootElement.add(uncategorized);
+		getRoot().add(uncategorized);
 	}
 
 
