@@ -6,13 +6,13 @@
 	margin-bottom: 3px;
 	margin-left: 3px;
 	margin-right: 3px;
-	background-color: #EEEEF2;
+	background-color: COLOR-WIDGET-BACKGROUND;
 }
 
 
 #PerspectiveSwitcher 
 {
-	eclipse-perspective-keyline-color: #EEEEF2;
+	eclipse-perspective-keyline-color: COLOR-WIDGET-BACKGROUND;
 }
 
 

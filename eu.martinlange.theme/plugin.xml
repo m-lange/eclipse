@@ -6,7 +6,7 @@
       <theme
             basestylesheeturi="css/classic.css"
             id="eu.martinlange.theme.classic"
-            label="Classic Theme">
+            label="Classic by Martin Lange">
       </theme>
       <stylesheet
             uri="css/empty.css">
