@@ -10,8 +10,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+
 import eu.martinlange.launchpad.Plugin;
-import eu.martinlange.launchpad.model.TreeNode;
 
 @SuppressWarnings("rawtypes")
 public class LaunchpadAdapterFactory implements IAdapterFactory {
@@ -24,6 +24,7 @@ public class LaunchpadAdapterFactory implements IAdapterFactory {
 
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 		if (adapterType == ILaunchConfiguration.class) {
 			if (adaptableObject instanceof IPath)
@@ -35,16 +36,6 @@ public class LaunchpadAdapterFactory implements IAdapterFactory {
 			else if (adaptableObject instanceof ISelection)
 				return getAdapter((ISelection) adaptableObject);
 
-			else if (adaptableObject instanceof TreeNode)
-				return getAdapter((TreeNode) adaptableObject);
-
-			return null;
-		}
-
-		if (adapterType == TreeNode.class) {
-			if (adaptableObject instanceof IStructuredSelection && ((IStructuredSelection) adaptableObject).getFirstElement() instanceof TreeNode)
-				return (TreeNode) ((IStructuredSelection) adaptableObject).getFirstElement();
-
 			return null;
 		}
 
@@ -53,9 +44,9 @@ public class LaunchpadAdapterFactory implements IAdapterFactory {
 
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Class[] getAdapterList() {
-		return new Class[] { ILaunchConfiguration.class,
-				             TreeNode.class };
+		return new Class[] { ILaunchConfiguration.class };
 	}
 
 
@@ -97,16 +88,6 @@ public class LaunchpadAdapterFactory implements IAdapterFactory {
 			return obj;
 		else if (obj instanceof IFile)
 			return getAdapter((IFile) obj);
-		else if (obj instanceof TreeNode)
-			return getAdapter((TreeNode) obj);
-
-		return null;
-	}
-
-
-	protected Object getAdapter(TreeNode selection) {
-		if (selection.getData() instanceof ILaunchConfiguration)
-			return selection.getData();
 
 		return null;
 	}

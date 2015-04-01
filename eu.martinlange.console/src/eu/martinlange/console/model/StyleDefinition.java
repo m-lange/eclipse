@@ -102,7 +102,8 @@ public class StyleDefinition implements IAdaptable {
 
 
 	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	public Object getAdapter(Class adapter) {
 		if (adapter != StyleRange.class)
 			return null;
 

@@ -46,8 +46,8 @@ public class ConsolePageParticipant implements IConsolePageParticipant {
 	}
 
 
-	@SuppressWarnings("rawtypes")
 	@Override
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public Object getAdapter(Class adapter) {
 		return null;
 	}

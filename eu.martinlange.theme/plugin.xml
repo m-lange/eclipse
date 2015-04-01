@@ -4,14 +4,14 @@
    <extension
          point="org.eclipse.e4.ui.css.swt.theme">
       <theme
-            basestylesheeturi="css/classic.css"
-            id="eu.martinlange.theme.classic"
-            label="Classic by Martin Lange">
+            basestylesheeturi="css/one_light.css"
+            id="eu.martinlange.theme.one"
+            label="One Light">
       </theme>
       <stylesheet
             uri="css/empty.css">
          <themeid
-               refid="eu.martinlange.theme.classic">
+               refid="eu.martinlange.theme.one">
          </themeid>
          <osgiresourcelocator
                uri="platform:/plugin/eu.martinlange.theme/">
